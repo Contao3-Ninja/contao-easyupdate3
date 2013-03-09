@@ -163,17 +163,17 @@ class easyupdate3 extends \BackendModule
 		switch ($update) 
 		{
 			case 1 :
-				$return .= '<div style="color:#8ab858; padding:0px 10px 0px 10px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update1'] . '</div>';
+				$return .= '<div class="tl_confirm">' . $GLOBALS['TL_LANG']['easyupdate3']['update1'] . '</div>';
 				break;
 			case 2 :
-				$return .= '<div style="color:#bdc700; padding:0px 10px 0px 10px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update2'] . '</div>';
+				$return .= '<div class="tl_new">'     . $GLOBALS['TL_LANG']['easyupdate3']['update2'] . '</div>';
 				break;
 			default :
-				$return .= '<div style="color:#CC5555; padding:0px 10px 0px 10px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update0'] . '</div>';
+				$return .= '<div class="tl_error">'   . $GLOBALS['TL_LANG']['easyupdate3']['update0'] . '</div>';
 				break;
 		}
 		$real_path = $this->Environment->documentRoot . $this->Environment->path . '/system/config';
-		$strConfig .= "<b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['config_legend'] . "</b><br/>";
+		$strConfig .= "<br><b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['config_legend'] . "</b><br>";
 		if (is_dir($real_path)) 
 		{
 			$intall = $intcheck = 0;
@@ -184,20 +184,27 @@ class easyupdate3 extends \BackendModule
 					$intall++;
 					$checked = $config[$file] == 1 ? checked : '';
 					$intcheck = $checked == checked ? ++ $intcheck : $intcheck;
-					$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br/>', $file, $file);
+					$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $file);
 				}
 			}
 		}
-		$strConfig .= "<b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['other_legend'] . "</b><br/>";
+		$strConfig .= "<br><b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['other_legend'] . "</b><br>";
 		$file = "robots.txt";
 		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/" . $file)) 
 		{
 			$checked = $config[$file] == 1 ? checked : '';
-			$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br/>', $file, $file);
+			$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $file);
+		}
+		// add by BugBuster
+		$file = "tinymce.css";
+		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/files/" . $file))
+		{
+		    $checked = $config[$file] == 1 ? checked : '';
+		    $strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, 'files/'.$file);
 		}
 		$file = $GLOBALS['TL_LANG']['easyupdate3']['demo'];
 		$checked = $config[demo] == 1 ? checked : '';
-		$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][demo]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br/>', $file);
+		$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][demo]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file);
 		// add the exclude files to the config
 		if ($GLOBALS['TL_CONFIG']['easyupdate3']) 
 		{
@@ -216,9 +223,9 @@ class easyupdate3 extends \BackendModule
 		$return .= '<input type="hidden" name="config[update]" value="' . $update . '">';
 		$return .= '<input type="hidden" name="config[import]" value="' . htmlentities(serialize($this->IMPORT)) . '">';
 		$id = "'config'";
-		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? checked : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br/>';
+		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? checked : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br>';
 		$return .= $strConfig;
-		$return .= '</form></div><div style="clear:both;"></div><p class="tl_help tl_tip" style="padding:5px 0px 0px 5px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
+		$return .= '</form></div><div style="clear:both;"></div><br><p class="tl_info" style="height: 26px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
 		$return .= '';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 		$return .= '<a href="' . $this->Environment->base . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
@@ -389,7 +396,8 @@ class easyupdate3 extends \BackendModule
 	protected function copyfiles($archive) 
 	{
 		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-		if ($config = unserialize($GLOBALS['TL_CONFIG']['easyupdate3'])) 
+		$config  = unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
+		if ($config) 
 		{
 			foreach ($config as $key => $value) 
 			{
@@ -404,6 +412,10 @@ class easyupdate3 extends \BackendModule
 					case ("robots.txt") :
 						$exclude[$key] = $value;
 						break;
+					// add by BugBuster
+					case ("tinymce.css") :
+					    $exclude['files/' . $key] = $value;
+					    break;
 					default :
 						$exclude['system/config/' . $key] = $value;
 						break;

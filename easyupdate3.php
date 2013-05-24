@@ -139,7 +139,7 @@ class easyupdate3 extends \BackendModule
 		} 
 		else 
 		{
-			$objArchive = new ZipReaderTL($archive);
+			$objArchive = new \ZipReader($archive);
 			$arrFiles = $objArchive->getFileList();
 			$i = strpos($arrFiles[0], '/') + 1;
 			array_shift($arrFiles);
@@ -243,7 +243,7 @@ class easyupdate3 extends \BackendModule
 	protected function showChangelog($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-		$objArchive = new ZipReaderTL($archive);
+		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
 		array_shift($arrFiles);
@@ -325,7 +325,7 @@ class easyupdate3 extends \BackendModule
 	protected function listfiles($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-		$objArchive = new ZipReaderTL($archive);
+		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') ? strpos($arrFiles[0], '/') + 1 : 0;
 		$return .= '<div style="width:700px; margin:0 auto;">';
@@ -352,13 +352,13 @@ class easyupdate3 extends \BackendModule
 	protected function backupfiles($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-		$objArchive = new ZipReaderTL($archive);
+		$objArchive = new \ZipReader($archive);
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['backup'] . '</h1>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
-		$objBackup = new ZipWriterTL($GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
+		$objBackup = new \ZipWriter($GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
 		$rootpath = 'contao-' . VERSION . '.' . BUILD . '/';
 		
 		foreach ($arrFiles as $strFile) 
@@ -422,7 +422,7 @@ class easyupdate3 extends \BackendModule
 				}
 			}
 		}
-		$objArchive = new ZipReaderTL($archive);
+		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
 		$return .= '<div style="width:700px; margin:0 auto;">';

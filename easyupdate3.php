@@ -74,7 +74,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function getFiles() 
 	{
-		$real_path = TL_ROOT . '/files/easyupdate3';
+		$real_path = TL_ROOT . '/'.$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3';
 		if (is_dir($real_path)) 
 		{
 			foreach (scandir($real_path, TRUE) as $file) 
@@ -99,8 +99,8 @@ class easyupdate3 extends \BackendModule
 			}
 			if ($strAllBackups) 
 			{
-				$strAllFiles = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['original'] . '">' . $strAllFiles . '</optgroup>';
-				$strAllBackups = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['backup'] . '">' . $strAllBackups . '</optgroup>';
+				$strAllFiles = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3'][$GLOBALS['TL_CONFIG']['uploadPath'] . '']['original'] . '">' . $strAllFiles . '</optgroup>';
+				$strAllBackups = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3'][$GLOBALS['TL_CONFIG']['uploadPath'] . '']['backup'] . '">' . $strAllBackups . '</optgroup>';
 			}
 		}
 		$return .= '<form action="' . ampersand($this->Environment->request) . '" name="tl_select_file" class="tl_form" method="GET">';
@@ -130,8 +130,8 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showInformation($archive, $config_post) 
 	{
-		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-		$config = $config_post ? $config_post['files'] : unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
+		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$config = $config_post ? $config_post[$GLOBALS['TL_CONFIG']['uploadPath'] . ''] : unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
 		if ($config_post) 
 		{
 			$update = $config_post['update'];
@@ -197,10 +197,10 @@ class easyupdate3 extends \BackendModule
 		}
 		// add by BugBuster
 		$file = "tinymce.css";
-		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/files/" . $file))
+		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/ " . $GLOBALS['TL_CONFIG']['uploadPath'] . " /" . $file))
 		{
 		    $checked = $config[$file] == 1 ? checked : '';
-		    $strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, 'files/'.$file);
+		    $strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $GLOBALS['TL_CONFIG']['uploadPath'] . '/'.$file);
 		}
 		$file = $GLOBALS['TL_LANG']['easyupdate3']['demo'];
 		$checked = $config[demo] == 1 ? checked : '';
@@ -242,7 +242,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showChangelog($archive) 
 	{
-		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$objArchive = new ZipReaderTL($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
@@ -324,7 +324,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function listfiles($archive) 
 	{
-		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$objArchive = new ZipReaderTL($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') ? strpos($arrFiles[0], '/') + 1 : 0;
@@ -351,14 +351,14 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function backupfiles($archive) 
 	{
-		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$objArchive = new ZipReaderTL($archive);
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['backup'] . '</h1>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
-		$objBackup = new ZipWriterTL('files/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
+		$objBackup = new ZipWriterTL($GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
 		$rootpath = 'contao-' . VERSION . '.' . BUILD . '/';
 		
 		foreach ($arrFiles as $strFile) 
@@ -395,7 +395,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function copyfiles($archive) 
 	{
-		$archive = 'files/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$config  = unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
 		if ($config) 
 		{
@@ -414,7 +414,7 @@ class easyupdate3 extends \BackendModule
 						break;
 					// add by BugBuster
 					case ("tinymce.css") :
-					    $exclude['files/' . $key] = $value;
+					    $exclude[$GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $key] = $value;
 					    break;
 					default :
 						$exclude['system/config/' . $key] = $value;

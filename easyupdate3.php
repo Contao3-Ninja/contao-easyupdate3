@@ -33,7 +33,7 @@ class easyupdate3 extends \BackendModule
 	
 	protected function compile() 
 	{
-		ini_set("memory_limit", "64M");
+		@ini_set("memory_limit", "128M");
 		// Contao 3 Hack auf die Schnelle
 		$this->import('Input');
 		$this->import('Environment');

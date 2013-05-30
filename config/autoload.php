@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  * 
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2013 Leo Feyer
  * 
  * @package Easyupdate3
  * @link    http://contao.org
@@ -16,10 +16,7 @@
  */
 ClassLoader::addClasses(array
 (
-	'SystemTL'    => 'system/modules/easyupdate3/SystemTL.php',
-	'ZipWriterTL' => 'system/modules/easyupdate3/ZipWriterTL.php',
 	'easyupdate3' => 'system/modules/easyupdate3/easyupdate3.php',
-	'ZipReaderTL' => 'system/modules/easyupdate3/ZipReaderTL.php',
 ));
 
 

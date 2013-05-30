@@ -87,7 +87,9 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 		if (!$strAllFiles)
+		{
 			$strAllFiles .= sprintf('<option value="%s">%s</option>', 'n.a.', 'n.a.');
+		}
 		$real_path = $real_path . '/backup';
 		if (is_dir($real_path)) 
 		{
@@ -95,12 +97,14 @@ class easyupdate3 extends \BackendModule
 			{
 				// remove hidden files and add only the zip files
 				if ($file[0] != '.' && substr($file, -3) == 'zip' && substr($file, 0, 3) == 'bak')
-					$strAllBackups .= sprintf('<option value="%s">%s</option>', $file, $file);
+				{
+				    $strAllBackups .= sprintf('<option value="%s">%s</option>', $file, $file);
+				}
 			}
 			if ($strAllBackups) 
 			{
-				$strAllFiles = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['original'] . '">' . $strAllFiles . '</optgroup>';
-				$strAllBackups = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['backup'] . '">' . $strAllBackups . '</optgroup>';
+				$strAllFiles   = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['original'] . '">' . $strAllFiles   . '</optgroup>';
+				$strAllBackups = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']   . '">' . $strAllBackups . '</optgroup>';
 			}
 		}
 		$return .= '<form action="' . ampersand($this->Environment->request) . '" name="tl_select_file" class="tl_form" method="GET">';
@@ -177,7 +181,8 @@ class easyupdate3 extends \BackendModule
 		if (is_dir($real_path)) 
 		{
 			$intall = $intcheck = 0;
-			foreach (scandir($real_path) as $file) {
+			foreach (scandir($real_path) as $file) 
+			{
 				// remove hidden files and add only the zip files
 				if ($file[0] != '.' && substr($file, -3) == 'php') 
 				{
@@ -209,12 +214,18 @@ class easyupdate3 extends \BackendModule
 		if ($GLOBALS['TL_CONFIG']['easyupdate3']) 
 		{
 			if (sizeof($config))
-				$this->Config->update("\$GLOBALS['TL_CONFIG']['easyupdate3']", serialize($config));
+			{
+			    $this->Config->update("\$GLOBALS['TL_CONFIG']['easyupdate3']", serialize($config));
+			}
 			else
-				$this->Config->delete("\$GLOBALS['TL_CONFIG']['easyupdate3']", 1);
+			{
+			    $this->Config->delete("\$GLOBALS['TL_CONFIG']['easyupdate3']", 1);
+			}
 		} 
 		else
-			$this->Config->add("\$GLOBALS['TL_CONFIG']['easyupdate3']", serialize($config));
+		{
+		    $this->Config->add("\$GLOBALS['TL_CONFIG']['easyupdate3']", serialize($config));
+		}
 		
 		$return .= '</div><div style="float:left; width:40%;">';
 		$return .= '<h2>' . $GLOBALS['TL_LANG']['easyupdate3']['noupdate'] . '</h2>';
@@ -291,19 +302,29 @@ class easyupdate3 extends \BackendModule
 				foreach ($changelog as $i => $text) 
 				{
 					if (substr_count($text, 'Version') & !$pos2)
-						$pos2 = $i;
+					{
+					    $pos2 = $i;
+					}
 					if (substr_count($text, VERSION . '.' . BUILD))
-						$pos1 = $i;
+					{
+					    $pos1 = $i;
+					}
 					if (substr_count($text, $this->IMPORT['VERSION'] . '.' . $this->IMPORT['BUILD']) && $this->IMPORT)
-						$pos2 = $i;
+					{
+					    $pos2 = $i;
+					}
 				}
 				$i = ($pos1 < $pos2 ? $pos1 : $pos2);
 				$m = ($pos1 > $pos2 ? $pos1 : $pos2);
 				for ($i; $i < $m; $i++)
-					$text .= $changelog[$i] . '<br>';
+				{
+				    $text .= $changelog[$i] . '<br>';
+				}
 			} 
 			else
-				$text = $GLOBALS['TL_LANG']['easyupdate3']['changelog']['no'];
+			{
+			    $text = $GLOBALS['TL_LANG']['easyupdate3']['changelog']['no'];
+			}
 		}
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">';
@@ -457,6 +478,10 @@ class easyupdate3 extends \BackendModule
 		$return .= '<a href="' . $this->Environment->base . 'contao/install.php" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 		$return .= '</div>';
 		$return .= '</div>';
+		// purge the internal cache
+		// system/cache/dca, system/cache/sql, system/cache/language
+		$this->import('Automator');
+		$this->Automator->purgeInternalCache();
 		return $return;
 	}
 

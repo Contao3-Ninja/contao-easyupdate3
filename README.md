@@ -7,10 +7,10 @@ Ich habe das Modul f체r Contao 3.0/3.1 angepasst, um weiter damit arbeiten zu k�
 
 Installation
 ------------
-* Download ZIP Datei, oben auf dieser Seite ist dazu der Link zu finden
+* Download ZIP Datei, rechts auf dieser Seite ist dazu der Link zu finden
 * auf lokaler Festplatte auspacken
 * auf dem Server im Verzeichnis `system/modules` ein neues Verzeichnis `easyupdate3` anlegen
-* in das Verzeichnis `system/modules/easyupdate3` nun die Dateien und Verzeichnisse 체bertragen
+* in das Verzeichnis `system/modules/easyupdate3` nun die Dateien und Verzeichnisse der ZIP 체bertragen, die in dem ersten Verzeichnis liegen
 * auf dem Server im Upload Verzeichnis `files` ein neues Verzeichnis `easyupdate3` anlegen, darin kommen sp채ter die ZIP Dateien f체r die Updates.
 * sollte Ihr Upload Verzeichnis `tl_files` lauten, dann darin das Verzeichnis `easyupdate3` anlegen.
 

@@ -2,7 +2,7 @@ privat-easyupdate3
 ==================
 
 Offline Fork from Contao Module easyupdate, keine offizielle Übernahme!
-Ich habe das Modul für Contao 3.0/3.1 angepasst, um weiter damit arbeiten zu können.
+Ich habe das Modul für Contao 3 angepasst, um weiter damit arbeiten zu können.
 
 
 Installation

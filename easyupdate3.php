@@ -1,27 +1,13 @@
 <?php
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005-2009 Leo Feyer
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
- * PHP version 5
+ * Contao Open Source CMS, Copyright (C) 2005-2014 Leo Feyer
  * 
- * @copyright	Copyright easyupdate 2009
- * @author		Lutz Schoening
- * @author		Glen Langer - offline fork 
+ * Module easyupdate3
+ * 
+ * @copyright	Glen Langer
+ * @author		Lutz Schoening (easyupdate for Contao 2)
+ * @author		Glen Langer
  * @package		easyupdate
  * @license		LGPL
  */
@@ -30,20 +16,21 @@ class easyupdate3 extends \BackendModule
 	// template var
 	protected $strTemplate = 'be_easyupdate3';
 	protected $IMPORT;
+	/*
+	 * File list to delete
+	 */
+	protected $DELETE = array();
 	
 	protected function compile() 
 	{
 		@ini_set("memory_limit", "128M");
-		// Contao 3 Hack auf die Schnelle
-		$this->import('Input');
-		$this->import('Environment');
 		// \\
-		$archive = $this->Input->GET('filename');
-		$task = ($archive == 'n.a.' ? 0 : $this->Input->GET('task'));
-		$config_post = $this->Input->POST('config');
-		$this->Template->referer = $this->getReferer(ENCODE_AMPERSANDS);
+		$archive = Input::get('filename');
+		$task = ($archive == 'n.a.' ? 0 : Input::get('task'));
+		$config_post = Input::post('config');
+		$this->Template->referer   = $this->getReferer(ENCODE_AMPERSANDS);
 		$this->Template->backTitle = specialchars($GLOBALS['TL_LANG']['easyupdate3']['backBT']);
-		$this->Template->headline = sprintf($GLOBALS['TL_LANG']['easyupdate3']['headline'], VERSION . '.' . BUILD);
+		$this->Template->headline  = sprintf($GLOBALS['TL_LANG']['easyupdate3']['headline'], VERSION . '.' . BUILD);
 		switch ($task) 
 		{
 			case 1 :
@@ -61,13 +48,25 @@ class easyupdate3 extends \BackendModule
 			case 5 :
 				$this->Template->ModuleList = $this->copyfiles($archive);
 				break;
+			case 6 :
+			    $this->Template->ModuleList = $this->deleteOldFiles($archive);
+			    break;
 			default :
 				$this->Template->ModuleFile = $this->getFiles();
 				break;
 		}
 	}
 	
-	
+	/**
+	 * reverse natsort
+	 * @param array $files
+	 */
+	protected function rnatsort(&$files)
+	{
+        natsort($files);
+        $files = array_reverse($files, false);
+    }
+    
     /**
 	 * get the file select box and the readme list
 	 * @return string
@@ -77,12 +76,25 @@ class easyupdate3 extends \BackendModule
 		$real_path = TL_ROOT . '/'. $GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3';
 		if (is_dir($real_path)) 
 		{
-			foreach (scandir($real_path, TRUE) as $file) 
+		    $files = scan($real_path);
+		    $this->rnatsort($files);
+		    
+		    $setSelected = false;
+			foreach ($files as $file) 
 			{
+			    $selected = "";
 				// remove hidden files and add only the zip files
-				if ($file[0] != '.' && substr($file, -3) == 'zip' && substr($file, 0, 3) != 'bak') 
+				if (substr($file,   -3) == 'zip' && 
+				    substr($file, 0, 3) != 'bak' &&
+                    substr($file,  -14) != 'delete.txt.zip') 
 				{
-					$strAllFiles .= sprintf('<option value="%s">%s</option>', $file, $file);
+				    if ( false === $setSelected &&
+				         false !== strpos($file,'Contao_'.VERSION.'.'.BUILD.'-') ) 
+				    {
+				    	$selected =' selected="selected"';
+				    	$setSelected = true;
+				    }
+					$strAllFiles .= sprintf('<option value="%s" %s>%s</option>', $file, $selected, $file);
 				}
 			}
 		}
@@ -93,10 +105,12 @@ class easyupdate3 extends \BackendModule
 		$real_path = $real_path . '/backup';
 		if (is_dir($real_path)) 
 		{
-			foreach (scandir($real_path, TRUE) as $file) 
+		    $files = scan($real_path);
+		    $this->rnatsort($files);
+			foreach ($files as $file) 
 			{
 				// remove hidden files and add only the zip files
-				if ($file[0] != '.' && substr($file, -3) == 'zip' && substr($file, 0, 3) == 'bak')
+				if (substr($file, -3) == 'zip' && substr($file, 0, 3) == 'bak')
 				{
 				    $strAllBackups .= sprintf('<option value="%s">%s</option>', $file, $file);
 				}
@@ -107,7 +121,7 @@ class easyupdate3 extends \BackendModule
 				$strAllBackups = '<optgroup label=" ' . $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']   . '">' . $strAllBackups . '</optgroup>';
 			}
 		}
-		$return .= '<form action="' . ampersand($this->Environment->request) . '" name="tl_select_file" class="tl_form" method="GET">';
+		$return .= '<form action="' . ampersand(Environment::get('request')) . '" name="tl_select_file" class="tl_form" method="GET">';
 		$return .= '<div class="tl_formbody_edit"><div class="tl_tbox">';
 		$return .= '<h3><label for="ctrl_original">' . $GLOBALS['TL_LANG']['easyupdate3']['selectfile'] . '</label></h3>';
 		$return .= '<input type="hidden" name="do" value="easyupdate3">';
@@ -116,11 +130,13 @@ class easyupdate3 extends \BackendModule
 		$return .= '<input type="submit" class="tl_submit" alt="select a file" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['easyupdate3']['setfile']) . '" />';
 		$return .= '<p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['easyupdate3']['description'] . '</p></form>';
 		$return .= '<h2><span style="color:#CC5555;">' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline'] . '</span></h2>';
-		$return .= $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1'];
-		$return .= $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2'];
-		$return .= '<div style="float:left; width:50%" >' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['left'] . '</div>';
-		$return .= '<div style="float:left;">' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['right'] . '</div>';
-		$return .= '<div style="clear:both;"></div>';
+		$return .= '<h2>'.$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_title'].'</h2>';
+		$return .= $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text'];
+		$return .= '<h2>'.$GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title'].'</h2>';
+		$return .= $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text'];
+		$return .= '<div style="margin-top:9px;"   ><strong>' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']   . '</strong></div>';
+		$return .= '<div style="margin-bottom:9px;"><strong>' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect'] . '</strong></div>';
+		$return .= '<div></div>';
 		$return .= $GLOBALS['TL_LANG']['easyupdate3']['readme']['text4'];
 		$return .= '</div></div>';
 		return $return;
@@ -176,15 +192,20 @@ class easyupdate3 extends \BackendModule
 				$return .= '<div class="tl_error">'   . $GLOBALS['TL_LANG']['easyupdate3']['update0'] . '</div>';
 				break;
 		}
-		$real_path = $this->Environment->documentRoot . $this->Environment->path . '/system/config';
+		$real_path = Environment::get('documentRoot') . Environment::get('path') . '/system/config';
 		$strConfig .= "<br><b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['config_legend'] . "</b><br>";
 		if (is_dir($real_path)) 
 		{
 			$intall = $intcheck = 0;
-			foreach (scandir($real_path) as $file) 
+			foreach (scan($real_path) as $file) 
 			{
-				// remove hidden files and add only the zip files
-				if ($file[0] != '.' && substr($file, -3) == 'php') 
+				// only a few php files
+				if (   $file == 'ace.php'
+                    || $file == 'agents.php'
+                    || $file == 'tinyFlash.php'
+                    || $file == 'tinyMCE.php'
+                    || $file == 'tinyNews.php'
+                   ) 
 				{
 					$intall++;
 					$checked = $config[$file] == 1 ? checked : '';
@@ -195,21 +216,27 @@ class easyupdate3 extends \BackendModule
 		}
 		$strConfig .= "<br><b>&nbsp;" . $GLOBALS['TL_LANG']['easyupdate3']['other_legend'] . "</b><br>";
 		$file = "robots.txt";
-		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/" . $file)) 
+		if (is_file(Environment::get('documentRoot') . Environment::get('path') . "/" . $file)) 
 		{
 			$checked = $config[$file] == 1 ? checked : '';
 			$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $file);
 		}
 		// add by BugBuster
 		$file = "tinymce.css";
-		if (is_file($this->Environment->documentRoot . $this->Environment->path . "/".$GLOBALS['TL_CONFIG']['uploadPath']."/" . $file))
+		if (is_file(Environment::get('documentRoot') . Environment::get('path') . "/".$GLOBALS['TL_CONFIG']['uploadPath']."/" . $file))
 		{
 		    $checked = $config[$file] == 1 ? checked : '';
 		    $strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $GLOBALS['TL_CONFIG']['uploadPath'] . '/'.$file);
 		}
-		$file = $GLOBALS['TL_LANG']['easyupdate3']['demo'];
-		$checked = $config[demo] == 1 ? checked : '';
-		$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][demo]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file);
+
+		//ab 3.3.1 kommt keine Demo mehr mit
+		if (version_compare($this->IMPORT['VERSION'] .'.'. $this->IMPORT['BUILD'], '3.3.1', '<')) 
+		{
+            $file = $GLOBALS['TL_LANG']['easyupdate3']['demo'];
+            $checked = $config[demo] == 1 ? checked : '';
+    		$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][demo]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file);
+		}
+
 		// add the exclude files to the config
 		if ($GLOBALS['TL_CONFIG']['easyupdate3']) 
 		{
@@ -229,8 +256,8 @@ class easyupdate3 extends \BackendModule
 		
 		$return .= '</div><div style="float:left; width:40%;">';
 		$return .= '<h2>' . $GLOBALS['TL_LANG']['easyupdate3']['noupdate'] . '</h2>';
-		$return .= '<form action="' . ampersand($this->Environment->request) . '" name="tl_select_config" class="tl_form" method="POST">';
-		$return .= '<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">';
+		$return .= '<form action="' . ampersand(Environment::get('request')) . '" name="tl_select_config" class="tl_form" method="POST">';
+		$return .= '<input type="hidden" name="REQUEST_TOKEN"  value="' . REQUEST_TOKEN.'">';
 		$return .= '<input type="hidden" name="config[update]" value="' . $update . '">';
 		$return .= '<input type="hidden" name="config[import]" value="' . htmlentities(serialize($this->IMPORT)) . '">';
 		$id = "'config'";
@@ -239,8 +266,8 @@ class easyupdate3 extends \BackendModule
 		$return .= '</form></div><div style="clear:both;"></div><br><p class="tl_info" style="height: 26px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
 		$return .= '';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $this->Environment->base . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
-		$return .= '<a href="' . str_replace('task=1', 'task=2', $this->Environment->base . $this->Environment->request) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
+		$return .= '<a href="' . str_replace('task=1', 'task=2', Environment::get('base') . Environment::get('request')) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 		$return .= '</div>';
 		$return .= '</div>';
 		return $return;
@@ -329,11 +356,11 @@ class easyupdate3 extends \BackendModule
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">';
 		$return .= sprintf($GLOBALS['TL_LANG']['easyupdate3']['changelog']['headline'], $this->IMPORT['VERSION'] . '.' . $this->IMPORT['BUILD'], VERSION . '.' . BUILD) . '</h1>';
-		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; padding:0px 20px 0px 10px; overflow:auto; background:#eee; border:1px solid #999;">';
+		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; padding:0px 20px 0px 10px; overflow:auto; background:#eee; border:1px solid #999;">';
 		$return .= $text . '</div>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $this->Environment->base . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
-		$return .= '<a href="' . str_replace('task=2', 'task=3', $this->Environment->base . $this->Environment->request) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
+		$return .= '<a href="' . str_replace('task=2', 'task=3', Environment::get('base') . Environment::get('request')) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 		$return .= '</div></div>';
 		return $return;
 	}
@@ -351,16 +378,20 @@ class easyupdate3 extends \BackendModule
 		$i = strpos($arrFiles[0], '/') ? strpos($arrFiles[0], '/') + 1 : 0;
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['content'] . '</h1>';
-		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
+		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
 		while ($objArchive->next()) 
 		{
-			$strfile = substr($objArchive->file_name, $i);
+		    $strfile = substr($objArchive->file_name, $i);
+		    if (substr($strfile, -12) == '.delete.json')
+		    {
+		        continue;
+		    }
 			$return .= '<li>' . $strfile . '</li>';
 		}
 		$return .= '</ol></div>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $this->Environment->base . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
-		$return .= '<a href="' . str_replace('task=3', 'task=4', $this->Environment->base . $this->Environment->request) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
+		$return .= '<a href="' . str_replace('task=3', 'task=4', Environment::get('base') . Environment::get('request')) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 		$return .= '</div>';
 		$return .= '</div>';
 		return $return;
@@ -376,18 +407,36 @@ class easyupdate3 extends \BackendModule
 		$objArchive = new \ZipReader($archive);
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['backup'] . '</h1>';
-		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
+		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
+		//File list to replace
 		$arrFiles = $objArchive->getFileList();
+		
+		//File list to delete
 		$i = strpos($arrFiles[0], '/') + 1;
+		while ($objArchive->next())
+		{
+		    $strfile = substr($objArchive->file_name, $i);
+		    if (substr($strfile, -12) == '.delete.json')
+		    {
+		        $this->DELETE = json_decode( $objArchive->unzip() );
+		        break;
+		    }
+		}
+
 		$objBackup = new \ZipWriter($GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
 		$rootpath = 'contao-' . VERSION . '.' . BUILD . '/';
 		
+		//Backup of files that would be replaced.
 		foreach ($arrFiles as $strFile) 
 		{
 			$strFile = substr($strFile, $i);
 			if ($strFile == 'system/runonce.php') 
 			{
 				continue;
+			}
+			if (substr($strFile, -12) == '.delete.json')
+			{
+			    continue;
 			}
 			try 
 			{
@@ -399,11 +448,33 @@ class easyupdate3 extends \BackendModule
 				$return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
 			}
 		}
+		//Backup of files that would be deleted.
+		reset($this->DELETE);
+		if ( 0 < count($this->DELETE)) 
+		{
+    		foreach ($this->DELETE as $strFile => $md5)
+    		{
+    		    
+    		    if ($md5 == '') // Directory
+    		    {
+    		        continue;
+    		    }
+    		    try
+    		    {
+    		        $objBackup->addFile($strFile, $rootpath . $strFile);
+    		        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['backuped'] . $strFile . '(for deleted)</li>';
+    		    }
+    		    catch (Exception $e)
+    		    {
+    		        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
+    		    }
+    		}
+		}
 		$objBackup->close();
 		$return .= '</ol></div>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $this->Environment->base . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
-		$return .= '<a href="' . str_replace('task=4', 'task=5', $this->Environment->base . $this->Environment->request) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;">&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</a>';
+		$return .= '<a href="' . str_replace('task=4', 'task=5', Environment::get('base') . Environment::get('request')) . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 		$return .= '</div>';
 		$return .= '</div>';
 		return $return;
@@ -448,7 +519,8 @@ class easyupdate3 extends \BackendModule
 		$i = strpos($arrFiles[0], '/') + 1;
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update'] . '</h1>';
-		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:500px; overflow:auto; background:#eee; border:1px solid #999;"><ol style="margin-top:0px">';
+		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;">';
+		$return .= '<ol style="margin-top:0px">';
 		// Unzip files
 		while ($objArchive->next()) 
 		{
@@ -458,11 +530,25 @@ class easyupdate3 extends \BackendModule
 				$return .= '<li style="color:#2500ff;">' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ': ' . $GLOBALS['TL_LANG']['easyupdate3']['exclude'] . '</li>';
 				continue;
 			}
+			if (substr($strFile, -12) == '.delete.json')
+			{
+			    $this->DELETE = json_decode( $objArchive->unzip() );
+			    continue;
+			}
 			try 
 			{
 				$objFile = new File($strFile);
 				$test = $objArchive->current();
-				$objFile->write($objArchive->unzip());
+				//Würgaround, Zipreader macht immer noch eine Exception
+				//wenn Datei 0 Byte hat
+				if ($test[uncompressed_size] != 0)
+				{
+				    $objFile->write($objArchive->unzip());
+				}
+				else 
+				{
+				    //$this->log('Datei mit 0 Byte gefunden: '.$strFile, 'easyupdate3 copyfiles', TL_GENERAL);
+				}				
 				$objFile->close();
 				$return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['updated'] . $strFile . '</li>';
 			} 
@@ -471,20 +557,111 @@ class easyupdate3 extends \BackendModule
 				$return .= '<li style="color:#ff0000;">' . $GLOBALS['TL_LANG']['easyupdate3']['error'] . $strFile . ': ' . $e->getMessage() . '</li>';
 			}
 		}
-		// Add log entry
-		$this->log('localremote update completed', 'easyupdate getFiles(), listfiles(), backupfiles(), copyfiles()', TL_GENERAL);
-		$return .= '</ol></div>';
-		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $this->Environment->base . 'contao/install.php" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
-		$return .= '</div>';
-		$return .= '</div>';
-		// purge the internal cache
-		// system/cache/dca, system/cache/sql, system/cache/language
-		$this->import('Automator');
-		$this->Automator->purgeInternalCache();
-		return $return;
+
+		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));
+
+	    $return .= '</ol></div>';
+	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
+		$return .= '<a href="' . $redirectUrl . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+	    $return .= '</div>';
+	    $return .= '</div>';
+	    return $return;
+
 	}
 
+	protected function deleteOldFiles($archive)
+	{
+	    $archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+	    
+	    $this->DELETE = array();
+	    $return = '';
+	    
+	    $objArchive = new \ZipReader($archive);
+	    $arrFiles = $objArchive->getFileList();	    
+	    $i = strpos($arrFiles[0], '/') + 1;
+	    while ($objArchive->next())
+	    {
+	        $strfile = substr($objArchive->file_name, $i);
+	        if (substr($strfile, -12) == '.delete.json')
+	        {
+	            $this->DELETE = json_decode( $objArchive->unzip() );
+	            break;
+	        }
+	    }
+	    
+	    $return .= '<div style="width:700px; margin:0 auto;">';
+	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['delete'] . '</h1>';
+	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;">';
+	    $return .= '<ol style="margin-top:0px">';
+	     
+	    //Delete files that would be deleted
+	    reset($this->DELETE);
+	    //$this->log('DELETE Array: '.print_r($this->DELETE, true), 'easyupdate copyfiles()', TL_GENERAL);
+	    if ( 0 < count($this->DELETE))
+	    {
+	        foreach ($this->DELETE as $strFile => $md5)
+	        {
+	            if ($md5 == '') // Folder
+	            {
+	                if (is_dir(TL_ROOT . '/' . $strFile))
+	                {
+	                    // Delete the folder
+	                    try
+	                    {
+	                        $objFolder = new \Folder($strFile);
+	                        $objFolder->delete();
+	                        $objFolder = null;
+	                        unset($objFolder);
+	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile . '</li>';
+	                    }
+	                    catch (Exception $e)
+	                    {
+	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
+	                    }
+	                }
+	            }
+	            else
+	            {
+	                if (file_exists(TL_ROOT . '/' . $strFile))
+	                {
+	                    // Delete the file
+	                    try
+	                    {
+	                        $objFile = new File($strFile, true);
+	                        $objFile->delete();
+	                        $objFile = null;
+	                        unset($objFile);
+	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile . '</li>';
+	                    }
+	                    catch (Exception $e)
+	                    {
+	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
+	                    }
+	                }
+	            }
+	        }//foreach
+	    }
+	    else 
+	    {
+	        //There is nothing to delete.
+	        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete'] . '</li>';
+	    }
+	    
+	    // purge the internal cache
+	    // system/cache/dca, system/cache/sql, system/cache/language
+	    $this->import('Automator');
+	    $this->Automator->purgeInternalCache();
+	    
+	    // Add log entry
+	    $this->log('easyupdate3 completed', 'easyupdate3 completed', TL_GENERAL);
+	    $return .= '</ol></div>';
+	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
+	    $return .= '<a href="' . Environment::get('base') . 'contao/install.php" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
+	    $return .= '</div>';
+	    $return .= '</div>';
+	    return $return;
+	}
+	
 	/**
 	 * get the version and build from the constants.php
 	 * @param string $temp
@@ -505,7 +682,7 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 		$IMPORT['VERSION'] = $pos_v ? $IMPORT_VERSION : 'X.X';
-		$IMPORT['BUILD'] = $pos_b ? $IMPORT_BUILD : 'X';
+		$IMPORT['BUILD']   = $pos_b ? $IMPORT_BUILD   : 'X';
 		return $IMPORT;
 	}
 

@@ -47,7 +47,6 @@ $GLOBALS['TL_LANG']['easyupdate3']['update1'] = 'Sie versuchen, eine neuere Vers
 $GLOBALS['TL_LANG']['easyupdate3']['update2'] = 'Sie versuchen, die gleiche Version zu installieren. Sind Sie sich sicher?';
 $GLOBALS['TL_LANG']['easyupdate3']['next'] = 'Nächsten Schritt ausführen';
 $GLOBALS['TL_LANG']['easyupdate3']['previous'] = 'Zurück zum Hauptbildschirm';
-$GLOBALS['TL_LANG']['easyupdate3']['settings'] = 'Einstellungen';
 $GLOBALS['TL_LANG']['easyupdate3']['changelog']['headline'] = 'Changelog zwischen der Version %s und %s';
 $GLOBALS['TL_LANG']['easyupdate3']['changelog']['same'] = 'Sie installieren die gleiche Version, daher auch keine Änderungen.';
 $GLOBALS['TL_LANG']['easyupdate3']['changelog']['no'] = 'Der Changelog ist leider nicht lesbar. Weitere Informationen zu den Änderungen können Sie auf der Contao-Homepage (http://www.contao.org/) nachlesen.';
@@ -56,26 +55,17 @@ $GLOBALS['TL_LANG']['easyupdate3']['backup'] = 'Sicherung der aktuellen Dateien'
 $GLOBALS['TL_LANG']['easyupdate3']['backuped'] = 'Gesichert: ';
 $GLOBALS['TL_LANG']['easyupdate3']['update'] = 'Aktualisierung der Dateien';
 $GLOBALS['TL_LANG']['easyupdate3']['updated'] = 'Aktualisiert: ';
+$GLOBALS['TL_LANG']['easyupdate3']['delete'] = 'Löschung von alten Dateien';
+$GLOBALS['TL_LANG']['easyupdate3']['deleted'] = 'Gelöscht: ';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped'] = 'Übersprungen: ';
+$GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete'] = 'Es gibt nichts zu löschen.';
 $GLOBALS['TL_LANG']['easyupdate3']['error'] = 'Fehler:';
 $GLOBALS['TL_LANG']['easyupdate3']['exclude'] = 'auschlossen';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline'] = 'Bitte aufmerksam und vollständig vor der Benutzung lesen';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1'] = '<h2>Die Installation besteht aus vier verschiedenen Schritten:</h2> 
-														<ul><li>Auflistung der Dateien im Archiv, welches importiert werden soll</li>
-														<li>Backup der aktuellen Dateien, damit man diese im Fehlerfall wiederherstellen kann</li>
-														<li>Aktualisierung der erforderlichen Dateien</li>
-														<li>Ausführung des Install-Tools</li></ul>
-														Für den 4. Schritt wird das Install-Tool verwendet. Es kann vorkommen, dass die Datenbank aktualisiert muss; darauf wird man im Install-Tool hingewiesen.														
-														Bitte beachten: Sofern die Config-Dateien überschrieben wurden, lautet das Passwort des Install-Tools "contao".';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text2'] = '<h2>Sicherheitshinweise:</h2>
-														<ul><li>Es gibt keine 100%-ige Sicherheit, dass alles einwandfrei funktioniert. Seien Sie sich also bewusst, was Sie tun!</li>
-														<li>Machen Sie bei der ersten Verwendung dieses Tools ruhig eine zusätzliche Sicherung der Datenbank.</li>
-														<li>Das Tool greift auf das Dateisystem zu, das kann zu DATENVERLUST führen!</li>
-														<li>Alles was Sie machen, tun Sie auf eigene Gefahr.</li></ul>';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['left'] = '<h2>Getestete und funktionierende Vorgänge:</h2>
-																<ul><li>3.0.0 ====> 3.0.1</li>
-																</ul>';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['right'] = '<h2>Getestete und fehlerhafte Vorgänge:</h2>
-																<ul><li>2.x.x ====> 2.x.x</li></ul>';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4'] = 'Getestet wurde eine Installation bis zur Contao Version 3.0.1. Nicht mit Contao 2.x möglich!
-														Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_title'] ='Die Installation besteht aus 5 Schritten:'; 
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text'] = 'Auflistung der Dateien, Backup der aktuellen Dateien, Aktualisierung der Dateien, Löschung alter Dateien, Ausführung des Install-Tools. Es kann vorkommen, dass die Datenbank aktualisiert werden muss; darauf wird man im Install-Tool hingewiesen.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title'] = 'Sicherheitshinweise:';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text'] = 'Es gibt keine 100%-ige Sicherheit, dass alles einwandfrei funktioniert. Seien Sie sich also bewusst, was Sie tun! Machen Sie bei der ersten Verwendung dieses Tools ruhig eine zusätzliche Sicherung der Datenbank. Das Tool greift auf das Dateisystem zu, dass kann zu DATENVERLUST führen! Alles was Sie machen, tun Sie auf eigene Gefahr.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working'] = 'Getestete und funktionierende Vorgänge: Contao 3.x.x ==> 3.x.x';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect'] = 'Getestete und fehlerhafte Vorgänge: Contao 2.x.x ==> 2.x.x';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4'] = 'Getestet wurde eine Installation bis zur Contao Version 3.4.0. Nicht mit Contao 2.x möglich! Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';

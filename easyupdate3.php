@@ -558,15 +558,21 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 
+		// purge the internal cache
+		// system/cache/dca, system/cache/sql, system/cache/language
+		$this->import('Automator');
+		$this->Automator->purgeInternalCache();
+		
 		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));
-
+		$this->redirect($redirectUrl);
+		/*
 	    $return .= '</ol></div>';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 		$return .= '<a href="' . $redirectUrl . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
 	    $return .= '</div>';
 	    $return .= '</div>';
 	    return $return;
-
+        */
 	}
 
 	protected function deleteOldFiles($archive)
@@ -646,11 +652,6 @@ class easyupdate3 extends \BackendModule
 	        //There is nothing to delete.
 	        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete'] . '</li>';
 	    }
-	    
-	    // purge the internal cache
-	    // system/cache/dca, system/cache/sql, system/cache/language
-	    $this->import('Automator');
-	    $this->Automator->purgeInternalCache();
 	    
 	    // Add log entry
 	    $this->log('easyupdate3 completed', 'easyupdate3 completed', TL_GENERAL);

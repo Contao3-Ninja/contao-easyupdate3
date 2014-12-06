@@ -151,6 +151,9 @@ class easyupdate3 extends \BackendModule
 	protected function showInformation($archive, $config_post) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$this->logSteps('#### Start easyUpdate3 ####', $archive);
+		$this->logSteps('Show information', $archive);
+		$this->logSteps('Update file selected: '.basename($archive), $archive);
 		$config = $config_post ? $config_post['files'] : unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
 		if ($config_post) 
 		{
@@ -180,6 +183,7 @@ class easyupdate3 extends \BackendModule
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<div style="float:right; width:60%;">';
 		$return .= '<h2 style="padding:0px 0px 0px 10px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['updatex'], VERSION . '.' . BUILD, $this->IMPORT['VERSION'] . '.' . $this->IMPORT['BUILD']) . '</h2>';
+		$this->logSteps(sprintf($GLOBALS['TL_LANG']['easyupdate3']['updatex'], VERSION . '.' . BUILD, $this->IMPORT['VERSION'] . '.' . $this->IMPORT['BUILD']), $archive);
 		switch ($update) 
 		{
 			case 1 :
@@ -281,6 +285,7 @@ class easyupdate3 extends \BackendModule
 	protected function showChangelog($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$this->logSteps('Show changelog', $archive);
 		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
@@ -373,6 +378,7 @@ class easyupdate3 extends \BackendModule
 	protected function listfiles($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$this->logSteps('List files', $archive);
 		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') ? strpos($arrFiles[0], '/') + 1 : 0;
@@ -404,6 +410,7 @@ class easyupdate3 extends \BackendModule
 	protected function backupfiles($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$this->logSteps('Backup files', $archive);
 		$objArchive = new \ZipReader($archive);
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['backup'] . '</h1>';
@@ -424,6 +431,7 @@ class easyupdate3 extends \BackendModule
 		}
 
 		$objBackup = new \ZipWriter($GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3/backup/bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip');
+		$this->logSteps('Backup filename: bak' . date('YmdHi') . '-' . VERSION . '.' . BUILD . '.zip', $archive);
 		$rootpath = 'contao-' . VERSION . '.' . BUILD . '/';
 		
 		//Backup of files that would be replaced.
@@ -452,6 +460,7 @@ class easyupdate3 extends \BackendModule
 		reset($this->DELETE);
 		if ( 0 < count($this->DELETE)) 
 		{
+		    $this->logSteps('Backup of files that would be deleted', $archive);
     		foreach ($this->DELETE as $strFile => $md5)
     		{
     		    
@@ -488,6 +497,7 @@ class easyupdate3 extends \BackendModule
 	protected function copyfiles($archive) 
 	{
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
+		$this->logSteps('Copy files', $archive);
 		$config  = unserialize($GLOBALS['TL_CONFIG']['easyupdate3']);
 		if ($config) 
 		{
@@ -517,10 +527,12 @@ class easyupdate3 extends \BackendModule
 		$objArchive = new \ZipReader($archive);
 		$arrFiles = $objArchive->getFileList();
 		$i = strpos($arrFiles[0], '/') + 1;
+		/*
 		$return .= '<div style="width:700px; margin:0 auto;">';
 		$return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update'] . '</h1>';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;">';
 		$return .= '<ol style="margin-top:0px">';
+		*/
 		// Unzip files
 		while ($objArchive->next()) 
 		{
@@ -550,11 +562,13 @@ class easyupdate3 extends \BackendModule
 				    //$this->log('Datei mit 0 Byte gefunden: '.$strFile, 'easyupdate3 copyfiles', TL_GENERAL);
 				}				
 				$objFile->close();
-				$return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['updated'] . $strFile . '</li>';
+				//$return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['updated'] . $strFile . '</li>';
+				$this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['updated'] . $strFile, $archive);
 			} 
 			catch (Exception $e) 
 			{
-				$return .= '<li style="color:#ff0000;">' . $GLOBALS['TL_LANG']['easyupdate3']['error'] . $strFile . ': ' . $e->getMessage() . '</li>';
+				//$return .= '<li style="color:#ff0000;">' . $GLOBALS['TL_LANG']['easyupdate3']['error'] . $strFile . ': ' . $e->getMessage() . '</li>';
+			    $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['error'] . $strFile . ': ' . $e->getMessage(), $archive);
 			}
 		}
 
@@ -562,6 +576,7 @@ class easyupdate3 extends \BackendModule
 		// system/cache/dca, system/cache/sql, system/cache/language
 		$this->import('Automator');
 		$this->Automator->purgeInternalCache();
+		$this->logSteps('Purged the internal cache', $archive);
 		
 		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));
 		$this->redirect($redirectUrl);
@@ -578,7 +593,7 @@ class easyupdate3 extends \BackendModule
 	protected function deleteOldFiles($archive)
 	{
 	    $archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
-	    
+	    $this->logSteps('Delete old files', $archive);
 	    $this->DELETE = array();
 	    $return = '';
 	    
@@ -619,10 +634,12 @@ class easyupdate3 extends \BackendModule
 	                        $objFolder = null;
 	                        unset($objFolder);
 	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile . '</li>';
+	                        $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile, $archive);
 	                    }
 	                    catch (Exception $e)
 	                    {
 	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
+	                        $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile, $archive);
 	                    }
 	                }
 	            }
@@ -638,10 +655,12 @@ class easyupdate3 extends \BackendModule
 	                        $objFile = null;
 	                        unset($objFile);
 	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile . '</li>';
+	                        $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['deleted'] . $strFile, $archive);
 	                    }
 	                    catch (Exception $e)
 	                    {
 	                        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile . ' (' . $e->getMessage() . ')</li>';
+	                        $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['skipped'] . $strFile, $archive);
 	                    }
 	                }
 	            }
@@ -651,10 +670,12 @@ class easyupdate3 extends \BackendModule
 	    {
 	        //There is nothing to delete.
 	        $return .= '<li>' . $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete'] . '</li>';
+	        $this->logSteps($GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete'], $archive);
 	    }
 	    
 	    // Add log entry
 	    $this->log('easyupdate3 completed', 'easyupdate3 completed', TL_GENERAL);
+	    $this->logSteps('easyupdate3 completed, call install.php now', $archive);
 	    $return .= '</ol></div>';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 	    $return .= '<a href="' . Environment::get('base') . 'contao/install.php" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
@@ -736,4 +757,24 @@ class easyupdate3 extends \BackendModule
 		}
 		return $update;
 	}
+	
+	/**
+	 * Add a log entry
+	 * @param string
+	 * @param string
+	 */
+	protected function logSteps($strMessage, $archive)
+	{
+	    $strLogfile = basename($archive) .'.log';
+	    $file   = TL_ROOT . '/' . $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/logs/' . $strLogfile;
+	    $folder = dirname($file);
+	    // Create folder
+	    if (!is_dir($folder))
+	    {
+	        new \Folder($folder);
+	    }
+	    //Logging
+	    @error_log(sprintf("[%s] %s\n", date('d-M-Y H:i:s'), $strMessage), 3, $file);
+	}
+	
 }

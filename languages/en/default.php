@@ -27,11 +27,13 @@ $GLOBALS['TL_LANG']['easyupdate3']['delete']                       = 'Deletion o
 $GLOBALS['TL_LANG']['easyupdate3']['deleted']                      = 'Deleted: ';
 $GLOBALS['TL_LANG']['easyupdate3']['demo']                         = 'Demo Files';
 $GLOBALS['TL_LANG']['easyupdate3']['description']                  = 'Please select an archive from the directory (files/easyupdate3). The script do not search sub folders an accepted only ZIP-files.';
+$GLOBALS['TL_LANG']['easyupdate3']['done']                         = 'Done!';
 $GLOBALS['TL_LANG']['easyupdate3']['error']                        = 'Error: ';
 $GLOBALS['TL_LANG']['easyupdate3']['exclude']                      = 'exclude';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']              = 'Backup files';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['original']            = 'Original files';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                     = 'easyUpdate your Contao version (current version: %s)';
+$GLOBALS['TL_LANG']['easyupdate3']['log_notice']                   = 'The complete log file can be found on the file management, in the directory: %s';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                         = 'Next step';
 $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']            = 'There is nothing to delete.';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                     = 'Exclude files for update';
@@ -46,7 +48,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']        = 'Security n
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect'] = 'Tested and incorrect operations: Contao 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']   = 'Tested and working operations: Contao 3.x.x ==> 3.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']              = 'The installation until to the Contao version 3.4.0 was checked. Not possible with Contao 2.x!. If you see as the version information X.X.X the ZIP-file could be damaged.';
-$GLOBALS['TL_LANG']['easyupdate3']['selectfile']                   = 'Please select an archive (ZIP-file)';
+$GLOBALS['TL_LANG']['easyupdate3']['selectfile']                   = 'Please select a local archive (ZIP-file)';
 $GLOBALS['TL_LANG']['easyupdate3']['setfile']                      = 'Select';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped']                      = 'Skipped: ';
 $GLOBALS['TL_LANG']['easyupdate3']['update']                       = 'Update your files';
@@ -55,4 +57,9 @@ $GLOBALS['TL_LANG']['easyupdate3']['update1']                      = 'You will i
 $GLOBALS['TL_LANG']['easyupdate3']['update2']                      = 'You will install the same version .';
 $GLOBALS['TL_LANG']['easyupdate3']['updated']                      = 'Updated: ';
 $GLOBALS['TL_LANG']['easyupdate3']['updatex']                      = 'version (%s) ======> version (%s)';
+
+$GLOBALS['TL_LANG']['easyupdate3']['extern_title']                 = 'Externally available update archives';
+$GLOBALS['TL_LANG']['easyupdate3']['extern_notice']                = 'No official updates. No support from the Contao core team!';
+$GLOBALS['TL_LANG']['easyupdate3']['server_online']                = 'Server is online';
+$GLOBALS['TL_LANG']['easyupdate3']['server_offline']               = 'Server is offline';
 

@@ -8,6 +8,10 @@ Ich habe das Modul für Contao 3 angepasst, um weiter damit arbeiten zu können.
 
 * [zum Contao ER2](https://contao.org/de/extension-list/view/easyupdate3.de.html)
 
+## Installation über Composer
+
+* Paketname suchen: `contao-legacy/easyupdate3`
+
 ## Installation manuell
 
 * Download ZIP Datei, rechts auf dieser Seite ist dazu der Link zu finden

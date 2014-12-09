@@ -22,8 +22,7 @@
 	"require":{
 		"php":">=5.3",
 		"contao/core":">=3.0.6,<4",
-		"contao-community-alliance/composer-plugin": "*",
-		"bugbuster/botdetection":">=3.2.1"
+		"contao-community-alliance/composer-plugin": "*"
 	},
 	"autoload":{
 		"classmap":[""]

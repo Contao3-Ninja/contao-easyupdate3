@@ -144,10 +144,23 @@ class easyupdate3 extends \BackendModule
 		$return .= '  </div>';
 		$return .= '</div>';
 		//rechte Box TODO: partial template
+		$EA3Server = EasyUpdate3\ea3ServerCommunication::getInstance();  
+		$EA3ServerStatus = $EA3Server->getEA3ServerStatus(); 
 		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_title'].'</h3>';
-		$return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('error.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_offline'].'</p>';
+		if ($EA3ServerStatus == 0) 
+		{
+			$return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('unpublished.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_offline'].'</p>';
+		}
+		elseif ($EA3ServerStatus == 1) 
+		{
+			$return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('published.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_online']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_online'].'</p>';
+		}
+		elseif ($EA3ServerStatus == -1)
+		{
+		    $return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('error.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_offline'].' -1</p>';
+		}
 		$return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</p>';
 		$return .= '    <p style="text-align: justify;">In naher Zukunft können hier die Update ZIP Dateien transferiert werden bzw. werden als Link zum Download angeboten. Die ZIP Dateien entsprechen den selben wie auf der Seite <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. Diese Funktionalität ist noch in Entwicklung.</p>';
 		$return .= '    <p style="text-align: justify;">In the near future, the update ZIP files can be transferred here or they are offered as a link to download. The ZIP files correspond to the same as on the page <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. This feature is still under development.</p>';

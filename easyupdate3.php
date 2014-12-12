@@ -159,11 +159,73 @@ class easyupdate3 extends \BackendModule
 		}
 		elseif ($EA3ServerStatus == -1)
 		{
-		    $return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('error.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_offline'].' -1</p>';
+		    $return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('error.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_error'].'</p>';
+		    if ( EasyUpdate3\ea3ClientRuntime::isAllowUrlFopenEnabled() === false && 
+                 EasyUpdate3\ea3ClientRuntime::isCurlEnabled()          === false
+                )
+		    {
+		        $return .= '    <p style="text-align: justify;">'.$GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice'].'</p>';
+		    }
+	        $return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
 		}
-		$return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</p>';
-		$return .= '    <p style="text-align: justify;">In naher Zukunft können hier die Update ZIP Dateien transferiert werden bzw. werden als Link zum Download angeboten. Die ZIP Dateien entsprechen den selben wie auf der Seite <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. Diese Funktionalität ist noch in Entwicklung.</p>';
-		$return .= '    <p style="text-align: justify;">In the near future, the update ZIP files can be transferred here or they are offered as a link to download. The ZIP files correspond to the same as on the page <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. This feature is still under development.</p>';
+		$return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</p>'; // No official updates...
+
+		//Hier nun die Transfer Möglichkeit einbauen
+		if ( $EA3ServerStatus == 1 ) // Online
+	    {
+	        //return array (UUID als String, version_to, basename der ZIP)
+	        //return array( 0,0,'') wenn kein Update vorhanden
+	        //return array(-1,0,'') im Fehlerfall	        
+		    $arrEA3NextUpdate = $EA3Server->getEA3NextUpdateBySource(VERSION, BUILD);
+		}
+		else 
+		{
+		    //TODO: später löschen.
+		    $return .= '    <p style="text-align: justify;">In naher Zukunft können hier die Update ZIP Dateien transferiert werden bzw. werden als Link zum Download angeboten. Die ZIP Dateien entsprechen den selben wie auf der Seite <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. Diese Funktionalität ist noch in Entwicklung.</p>';
+		    $return .= '    <p style="text-align: justify;">In the near future, the update ZIP files can be transferred here or they are offered as a link to download. The ZIP files correspond to the same as on the page <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. This feature is still under development.</p>';
+		}
+		
+		$next_update = false;
+		switch (true)
+		{
+		    case ($arrEA3NextUpdate[0] == -1):
+		        //Error
+		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
+		        break;
+		    case ($arrEA3NextUpdate[0] == 0):
+		        //kein Update
+		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound'].'</p>';
+		        break;
+		    default :
+		        //Update vorhanden
+		        $next_update = true;
+		        $return .='<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found'].': '.$arrEA3NextUpdate[1].' ('.$arrEA3NextUpdate[2].')</p>';
+		}
+		
+		if ($next_update) 
+		{
+		    //return false bei Fehler
+		    //return 'ERR: 404 File not found' wenn für diese UUID keine Datei gefunden wurde
+		    //return kompette URL für Downlaod / Transfer
+		    $strNextUpdateUrl = $EA3Server->getEA3TransferUrlForUpdateZipByUuid($arrEA3NextUpdate[0]); //UUID als String
+		    switch (true)
+		    {
+		        case ($strNextUpdateUrl === false):
+		            //Error
+		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
+		            break;
+		        case ($strNextUpdateUrl == 'ERR: 404 File not found'):
+		            //File not found
+		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'].'</p>';
+		            break;
+	            default :
+	                //Ausgabe Buttons / Links
+	                $return .='<p>Transfer to file/easyupdate3 (comes later) | <a href="'.$strNextUpdateUrl.'" title="'.$arrEA3NextUpdate[2].'">Download ZIP Datei</a></p>';
+		    }
+		    
+		}
+		
+		
 		$return .= '  </div>';
 		$return .= '</div>';
 		$return .= '<style type="text/css">

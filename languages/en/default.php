@@ -62,4 +62,15 @@ $GLOBALS['TL_LANG']['easyupdate3']['extern_title']                 = 'Externally
 $GLOBALS['TL_LANG']['easyupdate3']['extern_notice']                = 'No official updates. No support from the Contao core team!';
 $GLOBALS['TL_LANG']['easyupdate3']['server_online']                = 'Server is online';
 $GLOBALS['TL_LANG']['easyupdate3']['server_offline']               = 'Server is offline';
+$GLOBALS['TL_LANG']['easyupdate3']['server_error']                 = 'Server is not reachable';
+$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice']          = 'The reason is logged in "System - System log".';
+$GLOBALS['TL_LANG']['easyupdate3']['allow_url_fopen_not_set']      = 'The PHP flag "allow_url_fopen" is not set.';
+$GLOBALS['TL_LANG']['easyupdate3']['curl_not_available']           = 'The PHP cURL extension is not available.';
+$GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice']            = '"easyUpdate3" requires the "allow_url_fopen flag to be set in the php.ini or the PHP cURL extension to communicate with the easyUpdate3 server.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error']        = 'Problem on search for the next update.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']     = 'No matching updates found.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']        = 'Found matching update for the target version';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']    = 'Problem on search for the filename.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'No matching file found for the UUID. The provider of the update files were automatically notified of this error.';
+
 

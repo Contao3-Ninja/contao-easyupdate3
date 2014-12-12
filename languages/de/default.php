@@ -61,3 +61,14 @@ $GLOBALS['TL_LANG']['easyupdate3']['extern_title']                 = 'Extern ver
 $GLOBALS['TL_LANG']['easyupdate3']['extern_notice']                = 'Keine offiziellen Updates. Kein Support vom Contao Core Team!';
 $GLOBALS['TL_LANG']['easyupdate3']['server_online']                = 'Server ist online';
 $GLOBALS['TL_LANG']['easyupdate3']['server_offline']               = 'Server ist offline';
+$GLOBALS['TL_LANG']['easyupdate3']['server_error']                 = 'Server nicht erreichbar';
+$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice']          = 'Im Menü unter System - System-Log ist die Ursache protokolliert.';
+$GLOBALS['TL_LANG']['easyupdate3']['allow_url_fopen_not_set']      = 'Das PHP-Flag "allow_url_fopen" ist nicht gesetzt.';
+$GLOBALS['TL_LANG']['easyupdate3']['curl_not_available']           = 'Die PHP cURL-Erweiterung ist nicht verfügbar.';
+$GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice']            = '"easyUpdate3" benötigt das gesetzte PHP-Flag "allow_url_fopen" in der php.ini oder die PHP cURL-Erweiterung zur Kommunikation mit dem "easyUpdate3 Server".';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error']        = 'Problem bei der Suche nach dem nächsten Update.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']     = 'Keine passenden Updates gefunden.';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']        = 'Passendes Update gefunden für Zielversion';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']    = 'Problem bei der Ermittlung des Dateinamens';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'Keine passende Datei gefunden für die ermmittelte UUID. Der Provider der Update Dateien wurde über diesen Fehler automatisch informiert.';
+

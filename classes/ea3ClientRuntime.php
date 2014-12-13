@@ -6,7 +6,7 @@ namespace BugBuster\EasyUpdate3;
  * Class ea3ClientRuntime
  * 
  * @author BugBuster
- * @author C-C-A (thanks)
+ * @author Contao Community Alliance (Thanks)
  */
 class ea3ClientRuntime
 {

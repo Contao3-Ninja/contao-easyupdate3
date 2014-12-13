@@ -68,7 +68,9 @@ $GLOBALS['TL_LANG']['easyupdate3']['curl_not_available']           = 'Die PHP cU
 $GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice']            = '"easyUpdate3" benötigt das gesetzte PHP-Flag "allow_url_fopen" in der php.ini oder die PHP cURL-Erweiterung zur Kommunikation mit dem "easyUpdate3 Server".';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error']        = 'Problem bei der Suche nach dem nächsten Update.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']     = 'Keine passenden Updates gefunden.';
-$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']        = 'Passendes Update gefunden für Zielversion';
+$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']        = 'Passendes Update gefunden auf Version %s';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']    = 'Problem bei der Ermittlung des Dateinamens';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'Keine passende Datei gefunden für die ermmittelte UUID. Der Provider der Update Dateien wurde über diesen Fehler automatisch informiert.';
+$GLOBALS['TL_LANG']['easyupdate3']['update_download']              = 'Download';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']              = 'Transfer nach %s';
 

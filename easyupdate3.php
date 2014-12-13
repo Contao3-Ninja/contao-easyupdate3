@@ -33,6 +33,12 @@ class easyupdate3 extends \BackendModule
 		$this->Template->headline  = sprintf($GLOBALS['TL_LANG']['easyupdate3']['headline'], VERSION . '.' . BUILD);
 		switch ($task) 
 		{
+			case 'transfer' :
+			    //TODO Transfer, dann refresh
+			    
+			    //TODO Refresh
+			    
+			    break;
 			case 1 :
 				$this->Template->ModuleList = $this->showInformation($archive, $config_post);
 				break;
@@ -168,7 +174,7 @@ class easyupdate3 extends \BackendModule
 		    }
 	        $return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
 		}
-		$return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</p>'; // No official updates...
+		$return .= '    <p><strong>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</strong></p>'; // No official updates...
 
 		//Hier nun die Transfer Möglichkeit einbauen
 		if ( $EA3ServerStatus == 1 ) // Online
@@ -177,6 +183,8 @@ class easyupdate3 extends \BackendModule
 	        //return array( 0,0,'') wenn kein Update vorhanden
 	        //return array(-1,0,'') im Fehlerfall	        
 		    $arrEA3NextUpdate = $EA3Server->getEA3NextUpdateBySource(VERSION, BUILD);
+		    //TODO Debug
+		    //log_message(print_r($arrEA3NextUpdate,true),'debug.log');
 		}
 		else 
 		{
@@ -185,46 +193,63 @@ class easyupdate3 extends \BackendModule
 		    $return .= '    <p style="text-align: justify;">In the near future, the update ZIP files can be transferred here or they are offered as a link to download. The ZIP files correspond to the same as on the page <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. This feature is still under development.</p>';
 		}
 		
-		$next_update = false;
-		switch (true)
+		if ( $EA3ServerStatus == 1 ) // Online
 		{
-		    case ($arrEA3NextUpdate[0] == -1):
-		        //Error
-		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
-		        break;
-		    case ($arrEA3NextUpdate[0] == 0):
-		        //kein Update
-		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound'].'</p>';
-		        break;
-		    default :
-		        //Update vorhanden
-		        $next_update = true;
-		        $return .='<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found'].': '.$arrEA3NextUpdate[1].' ('.$arrEA3NextUpdate[2].')</p>';
-		}
-		
-		if ($next_update) 
-		{
-		    //return false bei Fehler
-		    //return 'ERR: 404 File not found' wenn für diese UUID keine Datei gefunden wurde
-		    //return kompette URL für Downlaod / Transfer
-		    $strNextUpdateUrl = $EA3Server->getEA3TransferUrlForUpdateZipByUuid($arrEA3NextUpdate[0]); //UUID als String
-		    switch (true)
-		    {
-		        case ($strNextUpdateUrl === false):
-		            //Error
-		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
-		            break;
-		        case ($strNextUpdateUrl == 'ERR: 404 File not found'):
-		            //File not found
-		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'].'</p>';
-		            break;
-	            default :
-	                //Ausgabe Buttons / Links
-	                $return .='<p>Transfer to file/easyupdate3 (comes later) | <a href="'.$strNextUpdateUrl.'" title="'.$arrEA3NextUpdate[2].'">Download ZIP Datei</a></p>';
-		    }
-		    
-		}
-		
+    		$next_update = false;
+    		switch (true)
+    		{
+    		    case ($arrEA3NextUpdate[0] == -1):
+    		        //Error
+    		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
+    		        break;
+    		    case ($arrEA3NextUpdate[0] == '0'):
+    		        //kein Update
+    		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound'].'</p>';
+    		        break;
+    		    default :
+    		        //Update vorhanden
+    		        $next_update = true;
+    		        $return .='<p class="server_status" style="line-height: 19px;">'.Image::getHtml('published.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_online']).' '.sprintf($GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found'],$arrEA3NextUpdate[1]).'</p>';
+    		}
+    		
+    		if ($next_update) 
+    		{
+    		    //return false bei Fehler
+    		    //return 'ERR: 404 File not found' wenn für diese UUID keine Datei gefunden wurde
+    		    //return kompette URL für Downlaod / Transfer
+    		    $strNextUpdateUrl = $EA3Server->getEA3TransferUrlForUpdateZipByUuid($arrEA3NextUpdate[0]); //UUID als String
+    		    switch (true)
+    		    {
+    		        case ($strNextUpdateUrl === false):
+    		            //Error
+    		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error'].'<br>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
+    		            break;
+    		        case ($strNextUpdateUrl == 'ERR: 404 File not found'):
+    		            //File not found
+    		            $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'].'</p>';
+    		            break;
+    	            default :
+    	                //Ausgabe Buttons / Links
+    	                $return .='
+<div class="server_status" style="float:left;">
+    <img width="18" height="18" alt="application/zip" src="assets/contao/images/iconRAR.gif"> '.$arrEA3NextUpdate[2].'
+</div>
+';
+    	                $return .='
+<div style="float:right;">
+    <form action="' . ampersand(Environment::get('request')) . '" name="update_transfer" class="tl_form" method="GET" style="display: inline;">
+    	<input type="hidden" name="do" value="easyupdate3">
+    	<input type="hidden" name="task" value="transfer">
+    	<input type="image" src="system/modules/easyupdate3/assets/inbox-download.png" alt="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'" title="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'">
+    </form>
+    &nbsp;<a href="'.$strNextUpdateUrl.'" title="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].' '.$arrEA3NextUpdate[2].'" onclick="return !window.open(this.href)"><img width="16" height="16" alt="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].'" src="system/modules/easyupdate3/assets/drive-download.png"></a>
+</div>
+';
+    	                $return .='<div style="clear:both"></div>
+';
+    		    }
+    		}
+		} // if online
 		
 		$return .= '  </div>';
 		$return .= '</div>';

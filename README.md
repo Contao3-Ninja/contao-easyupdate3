@@ -32,3 +32,7 @@ Translations are managed using Transifex. To create a new translation or to help
 Project Link: [https://www.transifex.com/projects/p/contao-easyupdate3/](https://www.transifex.com/projects/p/contao-easyupdate3/)
 
 Howto: [http://docs.transifex.com/faq/#translating](http://docs.transifex.com/faq/#translating)
+
+
+## Icons
+This software using the Fugue Icons from http://p.yusukekamiyamane.com/icons/search/fugue/

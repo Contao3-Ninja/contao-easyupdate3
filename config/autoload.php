@@ -28,6 +28,8 @@ ClassLoader::addClasses(array
 	'easyupdate3'                                  => 'system/modules/easyupdate3/easyupdate3.php',
 	// Classes
 	'BugBuster\EasyUpdate3\ea3ServerCommunication' => 'system/modules/easyupdate3/classes/ea3ServerCommunication.php',
+	'BugBuster\EasyUpdate3\ea3ClientDownloader'    => 'system/modules/easyupdate3/classes/ea3ClientDownloader.php',
+	'BugBuster\EasyUpdate3\ea3ClientRuntime'       => 'system/modules/easyupdate3/classes/ea3ClientRuntime.php',
 ));
 
 

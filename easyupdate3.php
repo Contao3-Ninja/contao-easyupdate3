@@ -27,6 +27,10 @@ class easyupdate3 extends \BackendModule
 		// \\
 		$archive = Input::get('filename');
 		$task = ($archive == 'n.a.' ? 0 : Input::get('task'));
+		if ('transfer' == Input::post('task')) 
+		{
+			$task = 'transfer';
+		}
 		$config_post = Input::post('config');
 		$this->Template->referer   = $this->getReferer(ENCODE_AMPERSANDS);
 		$this->Template->backTitle = specialchars($GLOBALS['TL_LANG']['easyupdate3']['backBT']);
@@ -34,10 +38,23 @@ class easyupdate3 extends \BackendModule
 		switch ($task) 
 		{
 			case 'transfer' :
-			    //TODO Transfer, dann refresh
-			    
-			    //TODO Refresh
-			    
+			    $transfer_result = true;
+			    $url_parts = explode('file=', Input::post('updateurl',true));
+			    $path_parts = pathinfo($url_parts[1]);
+			    try 
+			    {
+			        \EasyUpdate3\ea3ClientDownloader::download(Input::post('updateurl',true), TL_ROOT .'/'. $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . $path_parts['basename']);
+			    } 
+			    catch (Exception $e) 
+			    {
+			        $this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'], $path_parts['basename']) .': '. $e->getMessage() );
+			        log_message($e);
+			        $transfer_result = false;
+			    }
+			    if ($transfer_result) 
+			    {
+			    	$this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok'], $path_parts['basename']) );
+			    }
 			    break;
 			case 1 :
 				$this->Template->ModuleList = $this->showInformation($archive, $config_post);
@@ -77,7 +94,7 @@ class easyupdate3 extends \BackendModule
 	 * get the file select box and the readme list
 	 * @return string
 	 */
-	protected function getFiles() 
+	protected function getFiles($notice = '') 
 	{
 		$real_path = TL_ROOT . '/'. $GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3';
 		if (is_dir($real_path)) 
@@ -104,6 +121,11 @@ class easyupdate3 extends \BackendModule
 				}
 			}
 		}
+		else 
+		{
+		    //anlegen
+		    new \Folder($GLOBALS['TL_CONFIG']['uploadPath'] .'/easyupdate3');		    
+		}
 		if (!$strAllFiles)
 		{
 			$strAllFiles .= sprintf('<option value="%s">%s</option>', 'n.a.', 'n.a.');
@@ -128,7 +150,7 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 		//linke Box TODO: partial template
-		$return .= '<div class="tl_formbody_edit" style="width:46%; float:left; border-right: 1px solid;">';
+		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; border-right: 1px solid;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '      <form action="' . ampersand(Environment::get('request')) . '" name="tl_select_file" class="tl_form" method="GET">';
 		$return .= '          <h3><label for="ctrl_original">' . $GLOBALS['TL_LANG']['easyupdate3']['selectfile'] . '</label></h3>';
@@ -186,12 +208,6 @@ class easyupdate3 extends \BackendModule
 		    //TODO Debug
 		    //log_message(print_r($arrEA3NextUpdate,true),'debug.log');
 		}
-		else 
-		{
-		    //TODO: später löschen.
-		    $return .= '    <p style="text-align: justify;">In naher Zukunft können hier die Update ZIP Dateien transferiert werden bzw. werden als Link zum Download angeboten. Die ZIP Dateien entsprechen den selben wie auf der Seite <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. Diese Funktionalität ist noch in Entwicklung.</p>';
-		    $return .= '    <p style="text-align: justify;">In the near future, the update ZIP files can be transferred here or they are offered as a link to download. The ZIP files correspond to the same as on the page <a href="http://contao.glen-langer.de" onclick="window.open(this.href); return false;" title="contao.glen-langer.de">contao.glen-langer.de</a>. This feature is still under development.</p>';
-		}
 		
 		if ( $EA3ServerStatus == 1 ) // Online
 		{
@@ -204,7 +220,7 @@ class easyupdate3 extends \BackendModule
     		        break;
     		    case ($arrEA3NextUpdate[0] == '0'):
     		        //kein Update
-    		        $return .= '<p>'.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound'].'</p>';
+    		        $return .= '<p class="server_status" style="line-height: 19px;">'.Image::getHtml('unpublished.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_online']).' '.$GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound'].'</p>';
     		        break;
     		    default :
     		        //Update vorhanden
@@ -237,9 +253,11 @@ class easyupdate3 extends \BackendModule
 ';
     	                $return .='
 <div style="float:right;">
-    <form action="' . ampersand(Environment::get('request')) . '" name="update_transfer" class="tl_form" method="GET" style="display: inline;">
+    <form action="' . ampersand(Environment::get('request')) . '" name="update_transfer" class="tl_form" method="POST" style="display: inline;">
     	<input type="hidden" name="do" value="easyupdate3">
+        <input type="hidden" name="REQUEST_TOKEN"  value="'.REQUEST_TOKEN.'">
     	<input type="hidden" name="task" value="transfer">
+        <input type="hidden" name="updateurl" value="'.$strNextUpdateUrl.'">
     	<input type="image" src="system/modules/easyupdate3/assets/inbox-download.png" alt="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'" title="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'">
     </form>
     &nbsp;<a href="'.$strNextUpdateUrl.'" title="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].' '.$arrEA3NextUpdate[2].'" onclick="return !window.open(this.href)"><img width="16" height="16" alt="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].'" src="system/modules/easyupdate3/assets/drive-download.png"></a>
@@ -247,12 +265,15 @@ class easyupdate3 extends \BackendModule
 ';
     	                $return .='<div style="clear:both"></div>
 ';
+    	                $return .= '<p style="margin-top:12px;"><strong>'.$notice.'</strong></div>
+';
     		    }
     		}
 		} // if online
 		
 		$return .= '  </div>';
-		$return .= '</div>';
+		$return .='   <div style="clear:both"></div>';
+		$return .= '</div>';//main
 		$return .= '<style type="text/css">
                     /* <![CDATA[ */
                     .server_status > img { vertical-align: middle; }

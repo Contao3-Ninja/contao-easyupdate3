@@ -3,14 +3,13 @@
 namespace BugBuster\EasyUpdate3;
 use BugBuster\EasyUpdate3\ea3ClientRuntime;
 
-
 /**
  * Class ea3ClientDownloader
  *
  * Convenience class for downloading files.
  * 
  * @author Contao Community Alliance (original: Composer Download.php)
- * @author Glen Langer (current version)
+ * @author Glen Langer (current version, add timeout and user agent)
  */
 class ea3ClientDownloader
 {
@@ -59,10 +58,16 @@ class ea3ClientDownloader
             $return = true;
             $file   = 'php://temp';
         }
-
+        set_time_limit(120);
+        
         $fileStream = fopen($file, 'wb+');
 
-        fwrite($fileStream, file_get_contents($url));
+        $context = array(
+            'http' => array('user_agent' => 'Tivoka/3.4.0 (easyUpdate3 fopen)')
+        );
+        
+        
+        fwrite($fileStream, file_get_contents( $url, false, stream_context_create($context)) );
         $headers              = $http_response_header;
         $firstHeaderLine      = $headers[0];
         $firstHeaderLineParts = explode(' ', $firstHeaderLine);
@@ -102,7 +107,8 @@ class ea3ClientDownloader
             $return = true;
             $file   = 'php://temp';
         }
-
+        set_time_limit(120); // 2 minutes for PHP
+        
         $curl = curl_init($url);
 
         $headerStream = fopen('php://temp', 'wb+');
@@ -110,8 +116,10 @@ class ea3ClientDownloader
 
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 120); // 2 minutes for cURL
         curl_setopt($curl, CURLOPT_WRITEHEADER, $headerStream);
         curl_setopt($curl, CURLOPT_FILE, $fileStream);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Tivoka/3.4.0 (easyUpdate3 curl)');
 
         curl_exec($curl);
 

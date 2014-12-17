@@ -73,4 +73,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']    = 'Problem be
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'Keine passende Datei gefunden für die ermmittelte UUID. Der Provider der Update Dateien wurde über diesen Fehler automatisch informiert.';
 $GLOBALS['TL_LANG']['easyupdate3']['update_download']              = 'Download';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer']              = 'Transfer nach %s';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']    = 'Datei %s wurde transferiert und kann nun im linken Select Menü ausgewählt werden.';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'] = 'Problem beim Transfer der Datei %s';
+
 

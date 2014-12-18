@@ -120,5 +120,26 @@ class ea3ServerCommunication extends \Backend
         }
         return base64_decode($transferURL->result);
     }
+    
+    public function getEA3HashForUpdateZipByFile($strPathFile)
+    {
+        $Hash = \Tivoka\Client::request( 'ea3server.getHash', array($strPathFile) );
+        try
+        {
+            \Tivoka\Client::connect($this->target)->send($Hash);
+        }
+        catch (\Exception $e)
+        {
+            $this->log('easyUpdate3 getEA3HashForUpdateZipByFile Error: '.$e->getMessage(), 'ea3ServerCommunication getEA3HashForUpdateZipByFile', TL_ERROR);
+            return false;
+        }
+    
+        if ($Hash->isError())
+        {
+            $this->log('easyUpdate3 getEA3HashForUpdateZipByFile Error: '.$e->getMessage(), 'ea3ServerCommunication getEA3HashForUpdateZipByFile', TL_ERROR);
+            return false;
+        }
+        return $Hash->result;
+    }
 }
 

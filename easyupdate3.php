@@ -51,6 +51,18 @@ class easyupdate3 extends \BackendModule
 			        log_message($e);
 			        $transfer_result = false;
 			    }
+			    if ($transfer_result)
+			    {
+    			    //Hash Test
+    			    $EA3Server = EasyUpdate3\ea3ServerCommunication::getInstance();
+    			    $HashRemote = $EA3Server->getEA3HashForUpdateZipByFile($url_parts[1]);
+    			    $HashLocal  = md5_file( TL_ROOT .'/'. $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . $path_parts['basename'] );
+    			    if ($HashRemote != $HashLocal) 
+    			    {
+    			        $this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash'], $path_parts['basename']) );
+    			    	$transfer_result = false;
+    			    }
+                }
 			    if ($transfer_result) 
 			    {
 			    	$this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok'], $path_parts['basename']) );

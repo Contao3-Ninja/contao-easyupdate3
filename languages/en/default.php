@@ -76,4 +76,5 @@ $GLOBALS['TL_LANG']['easyupdate3']['update_download']              = 'Download';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer']              = 'Transfer to %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']    = 'File %s has been transferred and can now be selected on the left.';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'] = 'Problem when transferring the file %s';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']   = 'Problem when transferring the file %s, wrong MD5-Hash.';
 

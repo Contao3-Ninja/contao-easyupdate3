@@ -119,7 +119,7 @@ class ea3ClientDownloader
         curl_setopt($curl, CURLOPT_TIMEOUT, 120); // 2 minutes for cURL
         curl_setopt($curl, CURLOPT_WRITEHEADER, $headerStream);
         curl_setopt($curl, CURLOPT_FILE, $fileStream);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Tivoka/3.4.0 (easyUpdate3 curl)');
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Tivoka/3.4.0 (easyUpdate3 c_url)'); //curl = Bot!
 
         curl_exec($curl);
 

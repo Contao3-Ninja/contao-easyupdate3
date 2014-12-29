@@ -60,6 +60,7 @@ class easyupdate3 extends \BackendModule
     			    if ($HashRemote != $HashLocal) 
     			    {
     			        $this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash'], $path_parts['basename']) );
+    			        log_message( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash'], $url_parts[1]) . 'R: '.$HashRemote.' L: '.$HashLocal);
     			    	$transfer_result = false;
     			    }
                 }

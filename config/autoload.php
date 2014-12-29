@@ -2,13 +2,22 @@
 
 /**
  * Contao Open Source CMS
- * 
- * Copyright (C) 2005-2013 Leo Feyer
- * 
+ *
+ * Copyright (c) 2005-2014 Leo Feyer
+ *
  * @package Easyupdate3
- * @link    http://contao.org
+ * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
+
+
+/**
+ * Register the namespaces
+ */
+ClassLoader::addNamespaces(array
+(
+	'BugBuster',
+));
 
 
 /**
@@ -16,7 +25,11 @@
  */
 ClassLoader::addClasses(array
 (
-	'easyupdate3' => 'system/modules/easyupdate3/easyupdate3.php',
+	'easyupdate3'                                  => 'system/modules/easyupdate3/easyupdate3.php',
+	// Classes
+	'BugBuster\EasyUpdate3\ea3ServerCommunication' => 'system/modules/easyupdate3/classes/ea3ServerCommunication.php',
+	'BugBuster\EasyUpdate3\ea3ClientDownloader'    => 'system/modules/easyupdate3/classes/ea3ClientDownloader.php',
+	'BugBuster\EasyUpdate3\ea3ClientRuntime'       => 'system/modules/easyupdate3/classes/ea3ClientRuntime.php',
 ));
 
 

@@ -72,6 +72,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['update_download']               = 'Загр�
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer']               = 'Перенести в %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok']  = 'Проблема при переносе файла %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']     = 'Файл %s был перенесен и теперь может быть выбран слева.';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']    = 'Проблема при переносе файла %s, неправильный MD5-хеш.';
 $GLOBALS['TL_LANG']['easyupdate3']['updated']                       = 'Обновлены:';
 $GLOBALS['TL_LANG']['easyupdate3']['updatex']                       = 'версия (%s) ======> версия (%s)';
 

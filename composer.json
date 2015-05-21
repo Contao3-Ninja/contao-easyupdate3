@@ -3,12 +3,12 @@
 	"description":"Contao module, update Contao 3 from the back end",
 	"keywords":["contao","update"],
 	"type":"contao-module",
-	"homepage":"http://www.contao.glen-langer.de",
+	"homepage":"http://contao.ninja",
 	"license":"LGPL-3.0+",
 	"authors":[
 		{
 			"name":"Glen Langer",
-			"homepage":"http://www.contao.glen-langer.de",
+			"homepage":"http://contao.ninja",
 			"role":"Developer"
 		}
 	],
@@ -21,9 +21,9 @@
 	},
 	"require":{
 		"php":">=5.3",
-		"contao/core":">=3.0.6,<4",
+		"contao/core":">=3.3.1,<4",
 		"contao-community-alliance/composer-plugin": "*",
-        "bugbuster/tivoka": "*"
+		"bugbuster/tivoka": "*"
 	},
 	"autoload":{
 		"classmap":[""]

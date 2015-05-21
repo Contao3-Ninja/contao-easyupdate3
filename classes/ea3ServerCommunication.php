@@ -51,6 +51,13 @@ class ea3ServerCommunication extends \Backend
         {
             $connect_possible = false;
         }
+        //Tivoka installiert?
+        if (!in_array('tivoka', $this->Config->getActiveModules()))
+        {
+            $this->log('easyUpdate3 Serverstatus Error: Please install the required extension "bugbuster/tivoka"', 'ea3ServerCommunication getEA3ServerStatus', TL_ERROR);
+            return -1;
+        }
+        
         $Status = \Tivoka\Client::request('ea3server.getStatus');
         try
         {

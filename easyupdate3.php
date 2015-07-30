@@ -26,7 +26,7 @@ class easyupdate3 extends \BackendModule
 		@ini_set("memory_limit", "128M");
 		// \\
 		$archive = Input::get('filename');
-		$task = ($archive == 'n.a.' ? 0 : Input::get('task'));
+		$task    = ($archive == 'n.a.' ? 0 : Input::get('task'));
 		if ('transfer' == Input::post('task')) 
 		{
 			$task = 'transfer';
@@ -39,8 +39,8 @@ class easyupdate3 extends \BackendModule
 		{
 			case 'transfer' :
 			    $transfer_result = true;
-			    $url_parts = explode('file=', Input::post('updateurl',true));
-			    $path_parts = pathinfo($url_parts[1]);
+			    $url_parts       = explode('file=', Input::post('updateurl',true));
+			    $path_parts      = pathinfo($url_parts[1]);
 			    try 
 			    {
 			        \EasyUpdate3\ea3ClientDownloader::download(Input::post('updateurl',true), TL_ROOT .'/'. $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . $path_parts['basename']);
@@ -62,11 +62,13 @@ class easyupdate3 extends \BackendModule
     			        $this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash'], $path_parts['basename']) );
     			        log_message( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash'], $url_parts[1]) . 'R: '.$HashRemote.' L: '.$HashLocal);
     			    	$transfer_result = false;
+    			    	unlink(TL_ROOT .'/'. $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . $path_parts['basename']);
     			    }
                 }
 			    if ($transfer_result) 
 			    {
 			    	$this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok'], $path_parts['basename']) );
+			    	$this->writeDbafs($GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3', $path_parts['basename']);
 			    }
 			    break;
 			case 1 :
@@ -190,15 +192,21 @@ class easyupdate3 extends \BackendModule
 		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_title'].'</h3>';
-		if ($EA3ServerStatus == 0) 
+		if ($EA3ServerStatus == 0) //offline gesetzt
 		{
 			$return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('unpublished.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_offline'].'</p>';
+			// Reason holen, Backendsprache übergeben
+			$EAOfflineReason = $EA3Server->getEA3ServerOfflineReason($GLOBALS['TL_LANGUAGE'],'en');
+			if ($EAOfflineReason !== false) 
+			{
+				$return .= '<p class="server_status" style="line-height: 19px; text-align: justify;">'.Image::getHtml('show.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$EAOfflineReason.'</p>';
+			}
 		}
-		elseif ($EA3ServerStatus == 1) 
+		elseif ($EA3ServerStatus == 1) //online gesetzt
 		{
 			$return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('published.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_online']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_online'].'</p>';
 		}
-		elseif ($EA3ServerStatus == -1)
+		elseif ($EA3ServerStatus == -1) // error
 		{
 		    $return .= '    <p class="server_status" style="line-height: 19px;">'.Image::getHtml('error.gif', $GLOBALS['TL_LANG']['easyupdate3']['server_offline']).' '.$GLOBALS['TL_LANG']['easyupdate3']['server_error'].'</p>';
 		    if ( EasyUpdate3\ea3ClientRuntime::isAllowUrlFopenEnabled() === false && 
@@ -209,8 +217,13 @@ class easyupdate3 extends \BackendModule
 		    }
 	        $return .= '    <p>'.$GLOBALS['TL_LANG']['easyupdate3']['server_error_notice'].'</p>';
 		}
-		$return .= '    <p><strong>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</strong></p>'; // No official updates...
+		$return .= '    <p><strong><em>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_notice'].'</em></strong></p>'; // No official updates...
 
+		// SMH? Nicht unerstuetzt
+		if ($GLOBALS['TL_CONFIG']['useFTP'])
+		{
+		    $return .= '    <p><strong>'.$GLOBALS['TL_LANG']['easyupdate3']['smh_warning'].'</strong></p>';
+		}
 		//Hier nun die Transfer Möglichkeit einbauen
 		if ( $EA3ServerStatus == 1 ) // Online
 	    {
@@ -266,14 +279,15 @@ class easyupdate3 extends \BackendModule
 ';
     	                $return .='
 <div style="float:right;">
-    <form action="' . ampersand(Environment::get('request')) . '" name="update_transfer" class="tl_form" method="POST" style="display: inline;">
+    <form id="transfer_form" action="' . ampersand(Environment::get('request')) . '" name="update_transfer" class="tl_form" method="POST" style="display: inline;">
     	<input type="hidden" name="do" value="easyupdate3">
         <input type="hidden" name="REQUEST_TOKEN"  value="'.REQUEST_TOKEN.'">
     	<input type="hidden" name="task" value="transfer">
         <input type="hidden" name="updateurl" value="'.$strNextUpdateUrl.'">
-    	<input type="image" src="system/modules/easyupdate3/assets/inbox-download.png" alt="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'" title="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'">
+    	<input type="image" src="system/modules/easyupdate3/assets/inbox-download.png" alt="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'" title="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'">
+  	    <a href="' . ampersand(Environment::get('request')) . '" onclick="document.getElementById(\'transfer_form\').submit(); return false;" title="'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to'],$GLOBALS['TL_CONFIG']['uploadPath'].'/easyupdate3/').'">'.$GLOBALS['TL_LANG']['easyupdate3']['update_transfer'].'</a>    	    
     </form>
-    &nbsp;<a href="'.$strNextUpdateUrl.'" title="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].' '.$arrEA3NextUpdate[2].'" onclick="return !window.open(this.href)"><img width="16" height="16" alt="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].'" src="system/modules/easyupdate3/assets/drive-download.png"></a>
+    &nbsp;<a href="'.$strNextUpdateUrl.'" title="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].' '.$arrEA3NextUpdate[2].'" onclick="return !window.open(this.href)"><img width="16" height="16" alt="'.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].'" src="system/modules/easyupdate3/assets/drive-download.png"> '.$GLOBALS['TL_LANG']['easyupdate3']['update_download'].'</a>
 </div>
 ';
     	                $return .='<div style="clear:both"></div>
@@ -946,4 +960,34 @@ class easyupdate3 extends \BackendModule
 	    }
 	}
 	
+	/**
+	 * Generate the DBafs entries
+	 * (copied from FormFileUpload.php)
+	 *   
+	 * @param string $strUploadFolder  without Prefix TL_ROOT/, without Suffix /
+	 * @param string $filename
+	 */
+	protected function writeDbafs($strUploadFolder, $filename)
+	{
+	    // Generate the DB entries
+	    $strFile = $strUploadFolder . '/' . $filename;
+	    $objFile = \FilesModel::findByPath($strFile);
+	    
+	    // Existing file is being replaced (see contao/core#4818)
+	    if ($objFile !== null)
+	    {
+	        $objFile->tstamp = time();
+	        $objFile->path   = $strFile;
+	        $objFile->hash   = md5_file(TL_ROOT . '/' . $strFile);
+	        $objFile->save();
+	    }
+	    else
+	    {
+	        \Dbafs::addResource($strFile);
+	    }
+	    
+	    // Update the hash of the target folder
+	    \Dbafs::updateFolderHashes($strUploadFolder);
+	    
+	}
 }

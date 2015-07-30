@@ -73,8 +73,10 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']        = 'Found matc
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']    = 'Problem on search for the filename.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'No matching file found for the UUID. The provider of the update files were automatically notified of this error.';
 $GLOBALS['TL_LANG']['easyupdate3']['update_download']              = 'Download';
-$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']              = 'Transfer to %s';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']              = 'Transfer';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to']           = 'Transfer to %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']    = 'File %s has been transferred and can now be selected on the left.';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'] = 'Problem when transferring the file %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']   = 'Problem when transferring the file %s, wrong MD5-Hash.';
 
+$GLOBALS['TL_LANG']['easyupdate3']['smh_warning']                  = 'Warning: "Safe Mode Hack" detected, but this is not supported.';

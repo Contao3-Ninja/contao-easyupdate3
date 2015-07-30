@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-12-09T23:40:29+01:00
+ * last-updated: 2015-07-26T00:53:22+02:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -64,14 +64,16 @@ $GLOBALS['TL_LANG']['easyupdate3']['server_offline']                = 'Серв�
 $GLOBALS['TL_LANG']['easyupdate3']['server_online']                 = 'Сервер доступен';
 $GLOBALS['TL_LANG']['easyupdate3']['setfile']                       = 'Выбрать';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped']                       = 'Пропущены:';
+$GLOBALS['TL_LANG']['easyupdate3']['smh_warning']                   = 'Внимание: "Safe Mode Hack" обнаружен, но не поддерживается.';
 $GLOBALS['TL_LANG']['easyupdate3']['update']                        = 'Обновление ваших файлов';
 $GLOBALS['TL_LANG']['easyupdate3']['update0']                       = 'Будет установлена старая версия Contao. Вы уверены в необходимости этого? Обновление на более раннюю версию, может быть не легким занятием.';
 $GLOBALS['TL_LANG']['easyupdate3']['update1']                       = 'Вы установите более новую версию Contao.';
 $GLOBALS['TL_LANG']['easyupdate3']['update2']                       = 'Вы устанавливаете ту же самую версию.';
 $GLOBALS['TL_LANG']['easyupdate3']['update_download']               = 'Загрузить';
-$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']               = 'Перенести в %s';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']               = 'Перенести';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok']  = 'Проблема при переносе файла %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']     = 'Файл %s был перенесен и теперь может быть выбран слева.';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to']            = 'Перенести в %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']    = 'Проблема при переносе файла %s, неправильный MD5-хеш.';
 $GLOBALS['TL_LANG']['easyupdate3']['updated']                       = 'Обновлены:';
 $GLOBALS['TL_LANG']['easyupdate3']['updatex']                       = 'версия (%s) ======> версия (%s)';

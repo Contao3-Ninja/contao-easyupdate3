@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-12-18T00:53:33+01:00
+ * last-updated: 2015-07-26T00:39:52+02:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -64,14 +64,16 @@ $GLOBALS['TL_LANG']['easyupdate3']['server_offline']                = 'Server is
 $GLOBALS['TL_LANG']['easyupdate3']['server_online']                 = 'Server ist online';
 $GLOBALS['TL_LANG']['easyupdate3']['setfile']                       = 'Auswählen';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped']                       = 'Übersprungen: ';
+$GLOBALS['TL_LANG']['easyupdate3']['smh_warning']                   = 'Warnung: "Safe Mode Hack" erkannt, aber dieser wird nicht unterstützt.';
 $GLOBALS['TL_LANG']['easyupdate3']['update']                        = 'Aktualisierung der Dateien';
 $GLOBALS['TL_LANG']['easyupdate3']['update0']                       = 'Sie versuchen, eine ältere Version zu installieren. Dies ist zwar nicht ausgeschlossen, jedoch nicht empfehlenswert und auch nicht immer möglich.';
 $GLOBALS['TL_LANG']['easyupdate3']['update1']                       = 'Sie versuchen, eine neuere Version zu installieren.';
 $GLOBALS['TL_LANG']['easyupdate3']['update2']                       = 'Sie versuchen, die gleiche Version zu installieren. Sind Sie sich sicher?';
 $GLOBALS['TL_LANG']['easyupdate3']['update_download']               = 'Download';
-$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']               = 'Transfer nach %s';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer']               = 'Transfer';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok']  = 'Problem beim Transfer der Datei %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok']     = 'Datei %s wurde transferiert und kann nun im linken Select Menü ausgewählt werden.';
+$GLOBALS['TL_LANG']['easyupdate3']['update_transfer_to']            = 'Transfer nach %s';
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']    = 'Problem beim Transfer, die Datei %s hat einen falschen MD5-Hash Wert.';
 $GLOBALS['TL_LANG']['easyupdate3']['updated']                       = 'Aktualisiert: ';
 $GLOBALS['TL_LANG']['easyupdate3']['updatex']                       = 'Version (%s) ======> Version (%s)';

@@ -743,7 +743,7 @@ class easyupdate3 extends \BackendModule
 		// purge the internal cache
 		// system/cache/dca, system/cache/sql, system/cache/language
 		$this->import('Automator');
-		$this->Automator->purgeInternalCache();
+		$this->Automator->purgeScriptCache();
 		$this->logSteps('Purged the internal cache', $archive);
 		
 		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));

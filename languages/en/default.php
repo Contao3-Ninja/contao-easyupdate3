@@ -30,6 +30,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['description']                  = 'Please sel
 $GLOBALS['TL_LANG']['easyupdate3']['done']                         = 'Done!';
 $GLOBALS['TL_LANG']['easyupdate3']['error']                        = 'Error: ';
 $GLOBALS['TL_LANG']['easyupdate3']['exclude']                      = 'exclude';
+$GLOBALS['TL_LANG']['easyupdate3']['files_not_availabe']           = 'files not available';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']              = 'Backup files';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['original']            = 'Original files';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                     = 'easyUpdate your Contao version (current version: %s)';

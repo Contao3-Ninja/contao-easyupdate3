@@ -175,7 +175,7 @@ class easyupdate3 extends \BackendModule
 		$return .= '          <input type="submit" class="tl_submit" alt="select a file" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['easyupdate3']['setfile']) . '" />';
 		$return .= '          <p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['easyupdate3']['description'] . '</p>';
         $return .= '      </form>';
-		$return .= '      <h2><span style="color:#CC5555;">' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline'] . '</span></h2>';
+		$return .= '      <h2><span class="mandatory">' . $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline'] . '</span></h2>';
 		$return .= '      <h2>'.$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_title'].'</h2>';
 		$return .= '      <p style="text-align: justify;">'.$GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text'].'</p>';
 		$return .= '      <h2>'.$GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title'].'</h2>';
@@ -292,15 +292,16 @@ class easyupdate3 extends \BackendModule
 ';
     	                $return .='<div style="clear:both"></div>
 ';
-    	                $return .= '<p style="margin-top:12px;"><strong>'.$notice.'</strong></div>
+    	                $return .= '<p style="margin-top:12px;"><strong>'.$notice.'</strong></p>
 ';
     		    }
     		}
 		} // if online
 		
-		$return .= '  </div>';
+		$return .= '    </div>'; //tl_box
+		$return .= '  </div>'; //tl_formbody_edit
 		$return .='   <div style="clear:both"></div>';
-		$return .= '</div>';//main
+		$return .= '</div>'; //main
 		$return .= '<style type="text/css">
                     /* <![CDATA[ */
                     .server_status > img { vertical-align: middle; }

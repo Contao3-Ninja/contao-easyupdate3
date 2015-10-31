@@ -26,7 +26,7 @@ class easyupdate3 extends \BackendModule
 		@ini_set("memory_limit", "128M");
 		// \\
 		$archive = Input::get('filename');
-		$task    = ($archive == 'n.a.' ? 0 : Input::get('task'));
+		$task    = ($archive == 'n.a.' ? 'nofiles' : Input::get('task'));
 		if ('transfer' == Input::post('task')) 
 		{
 			$task = 'transfer';
@@ -143,7 +143,7 @@ class easyupdate3 extends \BackendModule
 		}
 		if (!$strAllFiles)
 		{
-			$strAllFiles .= sprintf('<option value="%s">%s</option>', 'n.a.', 'n.a.');
+			$strAllFiles .= sprintf('<option value="%s">%s</option>', 'n.a.', $GLOBALS['TL_LANG']['easyupdate3']['files_not_availabe']);
 		}
 		$real_path = $real_path . '/backup';
 		if (is_dir($real_path)) 

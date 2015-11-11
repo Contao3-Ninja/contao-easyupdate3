@@ -742,8 +742,10 @@ class easyupdate3 extends \BackendModule
 		}
 
 		// purge the internal cache
-		// system/cache/dca, system/cache/sql, system/cache/language
+		// system/cache/dca, system/cache/sql, system/cache/language, system/cache/config
 		$this->import('Automator');
+		$this->Automator->purgeInternalCache();
+		// assets/js and assets/css + system/cache/html
 		$this->Automator->purgeScriptCache();
 		$this->logSteps('Purged the internal cache', $archive);
 		

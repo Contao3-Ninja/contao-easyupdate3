@@ -58,7 +58,7 @@ class ea3ClientDownloader
             $return = true;
             $file   = 'php://temp';
         }
-        set_time_limit(120);
+        @ini_set('max_execution_time', 120);
         
         $fileStream = fopen($file, 'wb+');
 
@@ -107,7 +107,7 @@ class ea3ClientDownloader
             $return = true;
             $file   = 'php://temp';
         }
-        set_time_limit(120); // 2 minutes for PHP
+        @ini_set('max_execution_time', 120); // 2 minutes for PHP
         
         $curl = curl_init($url);
 

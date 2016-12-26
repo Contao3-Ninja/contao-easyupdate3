@@ -1,3 +1,9 @@
 Ideen.txt
 # Transifex
 /.tx/
+# IDE
+.git/
+.settings/
+.buildpath
+.project
+

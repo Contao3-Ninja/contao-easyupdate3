@@ -13,9 +13,9 @@
 		}
 	],
 	"support":{
-		"issues":"https://github.com/BugBuster1701/privat-easyupdate3/issues",
+		"issues":"https://github.com/BugBuster1701/contao-easyupdate3/issues",
 		"irc":"irc://irc.freenode.org/contao.dev",
-		"source":"https://github.com/BugBuster1701/privat-easyupdate3",
+		"source":"https://github.com/BugBuster1701/contao-easyupdate3",
 		"wiki":"http://de.contaowiki.org/Easyupdate",
 		"forum":"https://community.contao.org/de/showthread.php?1607"
 	},
@@ -26,24 +26,27 @@
 		"bugbuster/tivoka": "*"
 	},
 	"autoload":{
-		"classmap":[""]
+		"classmap":["src/classes/", "src/modules/"]
 	},
 	"replace":{
 		"contao-legacy/easyupdate3":"self.version"
 	},
 	"extra":{
+		"branch-alias": {
+			"dev-develop": "3.4.x-dev"
+        },
 		"contao":{
 			"sources":{
-				"":"system/modules/easyupdate3"
+				"src":"system/modules/easyupdate3"
 			},
 			"transifex": {
 				"project": "contao-easyupdate3",
 				"prefix": "master-",
-				"languages_cto": "languages",
+				"languages_cto": "src/languages",
 				"languages_tx": ".tx"
 			},
 			"runonce":[
-				"runonce/easyupdate3runonce.php"
+				"src/runonce/easyupdate3runonce.php"
 			]
 		}
 	}

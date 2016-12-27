@@ -29,7 +29,7 @@ class RunonceJob extends Controller
 	public function run()
 	{
 		// delete old class files
-	    foreach (array('SystemTL.php', 'ZipReaderTL.php', 'ZipWriterTL.php') as $file)
+	    foreach (array('SystemTL.php', 'ZipReaderTL.php', 'ZipWriterTL.php', 'easyupdate3.php') as $file)
 	    {
 	        // Purge the file
     		if (is_file(TL_ROOT . '/system/modules/easyupdate3/'.$file))

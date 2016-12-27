@@ -1,60 +1,66 @@
 # Changelog EasyUpdate3
 
-## [3.3.3](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.3.3%22+is%3Aclosed) (2016-04-30)
-
-### Fixed bugs
-
-- [\#63](https://github.com/BugBuster1701/privat-easyupdate3/issues/63) Cannot set max_execution_time above master value of 45 (tried to set 120)
-
-## [3.3.2](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.3.2%22+is%3Aclosed) (2015-11-11)
-
-### Fixed bugs
-
-- [\#55](https://github.com/BugBuster1701/privat-easyupdate3/issues/55) Update Transifex Language Files
-- [\#54](https://github.com/BugBuster1701/privat-easyupdate3/issues/54) Cache löschen an spezieller Stelle
-
-## [3.3.1](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.3.1%22+is%3Aclosed) (2015-11-01)
-
-### Fixed bugs
-
-- [\#53](https://github.com/BugBuster1701/privat-easyupdate3/issues/53) "n.a." durch Text ersetzen, Update Sprachfiles
-- [\#52](https://github.com/BugBuster1701/privat-easyupdate3/issues/52) Aufruf von purgeScriptCache
-- [\#51](https://github.com/BugBuster1701/privat-easyupdate3/issues/51) Leere Auswahl führt zur Fehlermeldung
-- [\#50](https://github.com/BugBuster1701/privat-easyupdate3/issues/50) clear div sometimes not present
-
-## [3.3.0](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.3.0%22+is%3Aclosed) (2015-10-09)
+## [3.4.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.4.0%22+is%3Aclosed) (2016-12-27)
 
 ### New features
 
-- [\#44](https://github.com/BugBuster1701/privat-easyupdate3/issues/44) ReConnect anstoßen bei Connection Error
-- [\#42](https://github.com/BugBuster1701/privat-easyupdate3/issues/42) Transfer  bei SMH nicht möglich
-- [\#38](https://github.com/BugBuster1701/privat-easyupdate3/issues/38) Feature: Offline-Grund des Servers anzeigen
-- [\#34](https://github.com/BugBuster1701/privat-easyupdate3/issues/34) Check auf Vorhandensein von Tivoka
+- [\#33](https://github.com/BugBuster1701/contao-easyupdate3/issues/33) Composer Anpassungen
+
+## [3.3.3](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.3.3%22+is%3Aclosed) (2016-04-30)
 
 ### Fixed bugs
 
-- [\#56](https://github.com/BugBuster1701/privat-easyupdate3/issues/56) Dbafs::addResource
-- [\#46](https://github.com/BugBuster1701/privat-easyupdate3/issues/46) Transfer ZIP in DBFS eintragen
-- [\#45](https://github.com/BugBuster1701/privat-easyupdate3/issues/45) File not found legt zip an
+- [\#63](https://github.com/BugBuster1701/contao-easyupdate3/issues/63) Cannot set max_execution_time above master value of 45 (tried to set 120)
 
-## [3.2.0](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.2.0%22+is%3Aclosed) (2015-01-24)
-
-### New features
-
-- [\#26](https://github.com/BugBuster1701/privat-easyupdate3/issues/26) Links zu update Files
-
-## [3.1.0](https://github.com/BugBuster1701/privat-easyupdate3/issues?q=milestone%3A%223.1.0%22+is%3Aclosed) (2014-12-07)
-
-### New features
-
-- [\#31](https://github.com/BugBuster1701/privat-easyupdate3/issues/31) Textanpassungen
-- [\#30](https://github.com/BugBuster1701/privat-easyupdate3/issues/30) Sortierung der gefundenen Update Files
-- [\#27](https://github.com/BugBuster1701/privat-easyupdate3/issues/27) Liste der zu schützenden Dateien verringern
-- [\#21](https://github.com/BugBuster1701/privat-easyupdate3/issues/21) Automatisch alte Dateien löschen.
+## [3.3.2](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.3.2%22+is%3Aclosed) (2015-11-11)
 
 ### Fixed bugs
 
-- [\#11](https://github.com/BugBuster1701/privat-easyupdate3/issues/11) Could not decompress data on 0 byte files
+- [\#55](https://github.com/BugBuster1701/contao-easyupdate3/issues/55) Update Transifex Language Files
+- [\#54](https://github.com/BugBuster1701/contao-easyupdate3/issues/54) Cache löschen an spezieller Stelle
+
+## [3.3.1](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.3.1%22+is%3Aclosed) (2015-11-01)
+
+### Fixed bugs
+
+- [\#53](https://github.com/BugBuster1701/contao-easyupdate3/issues/53) "n.a." durch Text ersetzen, Update Sprachfiles
+- [\#52](https://github.com/BugBuster1701/contao-easyupdate3/issues/52) Aufruf von purgeScriptCache
+- [\#51](https://github.com/BugBuster1701/contao-easyupdate3/issues/51) Leere Auswahl führt zur Fehlermeldung
+- [\#50](https://github.com/BugBuster1701/contao-easyupdate3/issues/50) clear div sometimes not present
+
+## [3.3.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.3.0%22+is%3Aclosed) (2015-10-09)
+
+### New features
+
+- [\#44](https://github.com/BugBuster1701/contao-easyupdate3/issues/44) ReConnect anstoßen bei Connection Error
+- [\#42](https://github.com/BugBuster1701/contao-easyupdate3/issues/42) Transfer  bei SMH nicht möglich
+- [\#38](https://github.com/BugBuster1701/contao-easyupdate3/issues/38) Feature: Offline-Grund des Servers anzeigen
+- [\#34](https://github.com/BugBuster1701/contao-easyupdate3/issues/34) Check auf Vorhandensein von Tivoka
+
+### Fixed bugs
+
+- [\#56](https://github.com/BugBuster1701/contao-easyupdate3/issues/56) Dbafs::addResource
+- [\#46](https://github.com/BugBuster1701/contao-easyupdate3/issues/46) Transfer ZIP in DBFS eintragen
+- [\#45](https://github.com/BugBuster1701/contao-easyupdate3/issues/45) File not found legt zip an
+
+## [3.2.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.2.0%22+is%3Aclosed) (2015-01-24)
+
+### New features
+
+- [\#26](https://github.com/BugBuster1701/contao-easyupdate3/issues/26) Links zu update Files
+
+## [3.1.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.1.0%22+is%3Aclosed) (2014-12-07)
+
+### New features
+
+- [\#31](https://github.com/BugBuster1701/contao-easyupdate3/issues/31) Textanpassungen
+- [\#30](https://github.com/BugBuster1701/contao-easyupdate3/issues/30) Sortierung der gefundenen Update Files
+- [\#27](https://github.com/BugBuster1701/contao-easyupdate3/issues/27) Liste der zu schützenden Dateien verringern
+- [\#21](https://github.com/BugBuster1701/contao-easyupdate3/issues/21) Automatisch alte Dateien löschen.
+
+### Fixed bugs
+
+- [\#11](https://github.com/BugBuster1701/contao-easyupdate3/issues/11) Could not decompress data on 0 byte files
 
 
 

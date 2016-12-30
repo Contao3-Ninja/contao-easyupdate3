@@ -767,7 +767,9 @@ class easyupdate3 extends \BackendModule
 	    $this->logSteps('Delete old files', $archive);
 	    $this->DELETE = array();
 	    $return = '';
-	    
+	    $filesfound = 0;
+	    $htaccessfound = false;
+	    	    
 	    $objArchive = new \ZipReader($archive);
 	    $arrFiles = $objArchive->getFileList();	    
 	    $i = strpos($arrFiles[0], '/') + 1;
@@ -777,18 +779,32 @@ class easyupdate3 extends \BackendModule
 	        if (substr($strfile, -12) == '.delete.json')
 	        {
 	            $this->DELETE = json_decode( $objArchive->unzip() );
-	            break;
+	            $filesfound++;
+	        }
+	        if ($strfile == '.htaccess.default')
+	        {
+	            $htaccessfound = true;
+	            $filesfound++;
+	        }
+	        if ($filesfound == 2) 
+	        {
+	        	break;
 	        }
 	    }
 	    
 	    $return .= '<div style="width:700px; margin:0 auto;">';
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update'] . '</h1>';
-	    $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+	    $return .= '<ul  style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['delete'] . '</h1>';
-	    //$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;">';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:200px; overflow:auto;">';
-	    $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'<br>&nbsp;<br></li>';
-	     
+	    $return .= '<ul  style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'<br>&nbsp;<br></li></ul>';
+
+	    if ($htaccessfound) 
+	    {
+	       $return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['foundfiles'] . '</h1>';
+	       $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
+        }	     
 	    //Delete files that would be deleted
 	    reset($this->DELETE);
 	    //$this->log('DELETE Array: '.print_r($this->DELETE, true), 'easyupdate copyfiles()', TL_GENERAL);
@@ -850,7 +866,7 @@ class easyupdate3 extends \BackendModule
 	    // Add log entry
 	    $this->log('easyUpdate3 completed', 'easyUpdate3 completed', TL_GENERAL);
 	    $this->logSteps('easyUpdate3 completed, call install.php now', $archive);
-	    $return .= '</ul>'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['log_notice'], "easyupdate3/logs/".str_ireplace('.zip', '', basename($archive)) .".log") .'</div>';
+	    $return .= sprintf($GLOBALS['TL_LANG']['easyupdate3']['log_notice'], "easyupdate3/logs/".str_ireplace('.zip', '', basename($archive)) .".log") .'</div>';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 	    $return .= '<a href="' . Environment::get('base') . 'contao/install.php" style="float:right;"><strong>' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</strong></a>';
 	    $return .= '</div>';

@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2015-07-30T00:29:05+02:00
+ * last-updated: 2016-12-27T17:55:24+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -37,6 +37,8 @@ $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']               = 'Файл�
 $GLOBALS['TL_LANG']['easyupdate3']['files']['original']             = 'Оригинальные файлы';
 $GLOBALS['TL_LANG']['easyupdate3']['files_not_availabe']            = 'файлы не доступны';
 $GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice']             = 'Расширению "easyUpdate3" необходим флаг "allow_url_fopen", который необходимо установить в файле php.ini или расширение PHP Curl, для связи с сервером easyUpdate3.';
+$GLOBALS['TL_LANG']['easyupdate3']['foundfiles']                    = 'Уведомление';
+$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess']                 = 'Файл .htaccess.default изменился. Пожалуйста, сравните его с файлом .htaccess, если он используется.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error']         = 'Проблема поиска следующего обновления.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'Соответствующий файл не найден по UUID. Поставщик файлов обновлений был автоматически уведомлен об этой ошибке.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']         = 'Найдено подходящее обновление до версии %s';

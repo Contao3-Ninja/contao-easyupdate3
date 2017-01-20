@@ -454,6 +454,7 @@ class easyupdate3 extends \BackendModule
 	protected function showChangelog($archive) 
 	{
 	    $constants = '';
+	    $changelog = '';
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$this->logSteps('Show changelog', $archive);
 		$objArchive = new \ZipReader($archive);
@@ -805,7 +806,7 @@ class easyupdate3 extends \BackendModule
 	    if ($htaccessfound) 
 	    {
 	       $return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['foundfiles'] . '</h1>';
-	       $return .= '<ul style="margin-top:0px"; margin-left: 3px;><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
+	       $return .= '<ul style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
         }
         $return .= '<br>&nbsp;<br>';	     
 	    //Delete files that would be deleted

@@ -23,7 +23,11 @@ class easyupdate3 extends \BackendModule
 	
 	protected function compile() 
 	{
-		@ini_set("memory_limit", "128M");
+	    if ( $this->convertToBytes( ini_get("memory_limit") ) < 134217728 ) 
+	    {
+	    	@ini_set("memory_limit", "128M");
+	    }
+		
 		// \\
 		$archive = Input::get('filename');
 		$task    = ($archive == 'n.a.' ? 'nofiles' : Input::get('task'));
@@ -1014,5 +1018,21 @@ class easyupdate3 extends \BackendModule
 	    // Update the hash of the target folder
 	    \Dbafs::updateFolderHashes($strUploadFolder);
 	    
+	}
+	
+	/**
+	 * https://php.net/manual/en/function.ini-get.php#96996
+	 * 
+	 * @param  string  $size_str (128M, 64m, ...)
+	 */
+	protected function convertToBytes ($size_str)
+	{
+	    switch (substr ($size_str, -1))
+	    {
+	    	case 'M': case 'm': return (int)$size_str * 1048576;
+	    	case 'K': case 'k': return (int)$size_str * 1024;
+	    	case 'G': case 'g': return (int)$size_str * 1073741824;
+	    	default: return $size_str;
+	    }
 	}
 }

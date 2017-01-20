@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2016-12-27T17:55:24+01:00
+ * last-updated: 2017-01-20T21:55:58+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -59,7 +59,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text']          = 'Es gibt k
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']         = 'Sicherheitshinweise:';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect']  = 'Getestete und fehlerhafte Vorgänge: Contao 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']    = 'Getestete und funktionierende Vorgänge: Contao 3.x.x ==> 3.x.x';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Getestet wurde eine Installation bis zur Contao Version 3.4.0. Nicht mit Contao 2.x möglich! Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Getestet wurde eine Installation bis zur Contao Version 3.5.24. Nicht mit Contao 2.x möglich! Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';
 $GLOBALS['TL_LANG']['easyupdate3']['selectfile']                    = 'Bitte wählen Sie ein lokales Archiv aus (ZIP-Datei)';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error']                  = 'Server nicht erreichbar';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error_notice']           = 'Im Menü unter System - System-Log ist die Ursache protokolliert.';

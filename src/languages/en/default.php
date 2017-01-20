@@ -50,7 +50,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text']         = 'Nothing is
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']        = 'Security notice:';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect'] = 'Tested and incorrect operations: Contao 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']   = 'Tested and working operations: Contao 3.x.x ==> 3.x.x';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']              = 'The installation until to the Contao version 3.4.0 was checked. Not possible with Contao 2.x!. If you see as the version information X.X.X the ZIP-file could be damaged.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']              = 'The installation until to the Contao version 3.5.24 was checked. Not possible with Contao 2.x!. If you see as the version information X.X.X the ZIP-file could be damaged.';
 $GLOBALS['TL_LANG']['easyupdate3']['selectfile']                   = 'Please select a local archive (ZIP-file)';
 $GLOBALS['TL_LANG']['easyupdate3']['setfile']                      = 'Select';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped']                      = 'Skipped: ';

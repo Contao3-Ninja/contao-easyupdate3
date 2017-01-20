@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2016-12-27T17:55:24+01:00
+ * last-updated: 2017-01-20T22:32:36+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -59,7 +59,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text']          = 'К сож
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']         = 'Уведомление безопасности:';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect']  = 'Проверено и не корректно работает: 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']    = 'Проверено и работает: 3.x.x ==> 3.x.x';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Работа расширения была проверена на Contao версии 3.4.0. Работа с Contao 2.x невозможна!. Если вы видите версию XXX, вполне возможно, что ZIP-архив поврежден.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Работа расширения была проверена на Contao версии 3.5.24. Работа с Contao 2.x невозможна!. Если вы видите версию XXX, вполне возможно, что ZIP-архив поврежден.';
 $GLOBALS['TL_LANG']['easyupdate3']['selectfile']                    = 'Выберите локальный архив (ZIP-файл)';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error']                  = 'Сервер не доступен';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error_notice']           = 'Причина заносится в "Системный журнал" раздела "Система".';

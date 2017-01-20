@@ -796,17 +796,18 @@ class easyupdate3 extends \BackendModule
 	    
 	    $return .= '<div style="width:700px; margin:0 auto;">';
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update'] . '</h1>';
-	    $return .= '<ul  style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+	    $return .= '<ul  style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
 
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['delete'] . '</h1>';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:200px; overflow:auto;">';
-	    $return .= '<ul  style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'<br>&nbsp;<br></li></ul>';
+	    $return .= '<ul  style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
 
 	    if ($htaccessfound) 
 	    {
 	       $return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['foundfiles'] . '</h1>';
-	       $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
-        }	     
+	       $return .= '<ul style="margin-top:0px"; margin-left: 3px;><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
+        }
+        $return .= '<br>&nbsp;<br>';	     
 	    //Delete files that would be deleted
 	    reset($this->DELETE);
 	    //$this->log('DELETE Array: '.print_r($this->DELETE, true), 'easyupdate copyfiles()', TL_GENERAL);

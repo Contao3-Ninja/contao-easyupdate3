@@ -318,6 +318,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showInformation($archive, $config_post) 
 	{
+	    $constants = '';
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$this->logSteps('#### Start easyUpdate3 ####', $archive, true);
 		$this->logSteps('Show information', $archive);
@@ -345,7 +346,7 @@ class easyupdate3 extends \BackendModule
 			}
 			// get the version an build number
 			$this->IMPORT = $this->getVersionAndBuild($constants);
-			// check the both version
+			// check the both version, 0 => older, 1 => newer, 2 => same
 			$update = $this->checkVersion($this->IMPORT);
 		}
 		$return .= '<div style="width:700px; margin:0 auto;">';
@@ -452,6 +453,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showChangelog($archive) 
 	{
+	    $constants = '';
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$this->logSteps('Show changelog', $archive);
 		$objArchive = new \ZipReader($archive);
@@ -470,7 +472,7 @@ class easyupdate3 extends \BackendModule
 		$objArchive->reset();
 		// get the version an build number
 		$this->IMPORT = $this->getVersionAndBuild($constants);
-		// check the both version
+		// check the both version, 0 => older, 1 => newer, 2 => same
 		$update = $this->checkVersion($this->IMPORT);
 		switch ($update) 
 		{
@@ -880,6 +882,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function getVersionAndBuild($temp) 
 	{
+	    $pos_v = $pos_b = false;
 		foreach (explode("\n", $temp) as $text) 
 		{
 			if (substr_count($text, 'VERSION')) 
@@ -901,8 +904,8 @@ class easyupdate3 extends \BackendModule
 	/**
 	 * check if new, same or old version
 	 * @param array $IMPORT
-	 * @return    integer    0 => old
-	 *                       1 => News
+	 * @return    integer    0 => older
+	 *                       1 => newer
 	 *                       2 => same
 	 */
 	protected function checkVersion($IMPORT) 
@@ -911,6 +914,7 @@ class easyupdate3 extends \BackendModule
 		$VERSION = explode(".", VERSION);
 		$VERSION_IMPORT = explode(".", $IMPORT['VERSION']);
 		$BUILD_IMPORT = $IMPORT['BUILD'];
+		
 		if ($VERSION[0] > $VERSION_IMPORT[0]) 
 		{
 			$update = 0;

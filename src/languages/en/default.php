@@ -83,3 +83,15 @@ $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'] = 'Problem wh
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']   = 'Problem when transferring the file %s, wrong MD5-Hash.';
 
 $GLOBALS['TL_LANG']['easyupdate3']['smh_warning']                  = 'Warning: "Safe Mode Hack" detected, but this is not supported.';
+
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']            = 'Delete of the ZIP files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']              = 'Job';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']      = 'Description';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']      = 'Delete update ZIP files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']      = 'Delete backup ZIP files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']            = 'Files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr'] = 'Deletes all Update ZIP files which have been loaded from "easyUpdate3" or manually stored in the file folder "easyupdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr'] = 'Deletes all Backup ZIP files that were created before an update operation of "easyUpdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']           = 'Purge data';
+
+

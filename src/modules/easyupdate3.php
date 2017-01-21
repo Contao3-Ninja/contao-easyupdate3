@@ -305,10 +305,50 @@ class easyupdate3 extends \BackendModule
 		$return .= '    </div>'; //tl_box
 		$return .= '  </div>'; //tl_formbody_edit
 		$return .='   <div style="clear:both"></div>';
+		// Wartung
+		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left;">';
+		$return .= '  <div class="tl_tbox" id="tl_maintenance_cache" style="border-top: 1px solid;">';
+		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title'].'</h3>';
+		$return .= '
+<form id="transfer_form" action="' . ampersand(Environment::get('request')) . '" name="maintenance" class="tl_form" method="POST" style="display: inline;">
+			<input type="hidden" name="do" value="easyupdate3">
+			<input type="hidden" name="REQUEST_TOKEN"  value="'.REQUEST_TOKEN.'">
+			<input type="hidden" name="task" value="maintenance">
+			<table>
+				<thead>
+					<tr>
+						<th><input id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, \'maintenance\')" type="checkbox"></th>
+						<th>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job'].'</th>
+						<th>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description'].'</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_updates" class="tl_checkbox" value="updates" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_updates">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>38, 123 KiB</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr'].'</td>
+					</tr>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_updates" class="tl_checkbox" value="backups" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_backups">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>12, 234 KiB</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr'].'</td>
+					</tr>
+				</tbody>
+			</table>
+            <div class="tl_submit_container">
+                <input name="clear" class="tl_submit" value="'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit'].'" type="submit">
+            </div>
+</form>
+';
+		$return .= '    </div>'; //tl_box
+		$return .= '  </div>'; //tl_formbody_edit
+		// Wartung Ende \\
+		
 		$return .= '</div>'; //main
 		$return .= '<style type="text/css">
                     /* <![CDATA[ */
                     .server_status > img { vertical-align: middle; }
+                    .tl_submit_container { background: rgba(0, 0, 0, 0) none repeat scroll 0 0; }
                     /* ]]> */
                     </style>';
 		return $return;

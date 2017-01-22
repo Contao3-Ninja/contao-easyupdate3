@@ -825,16 +825,11 @@ class easyupdate3 extends \BackendModule
 		$this->Automator->purgeScriptCache();
 		$this->logSteps('Purged the internal cache', $archive);
 		
+		(function_exists('opcache_reset')) && opcache_reset();
+		(function_exists('accelerator_reset')) && accelerator_reset();
+		
 		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));
 		$this->redirect($redirectUrl);
-		/*
-	    $return .= '</ol></div>';
-	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $redirectUrl . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
-	    $return .= '</div>';
-	    $return .= '</div>';
-	    return $return;
-        */
 	}
 
 	protected function deleteOldFiles($archive)

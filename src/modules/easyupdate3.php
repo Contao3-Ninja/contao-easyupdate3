@@ -21,6 +21,8 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected $DELETE = array();
 	
+	protected $JOBSTATUS = false;
+	
 	protected function compile() 
 	{
 	    if ( $this->convertToBytes( ini_get("memory_limit") ) < 134217728 ) 
@@ -34,6 +36,10 @@ class easyupdate3 extends \BackendModule
 		if ('transfer' == Input::post('task')) 
 		{
 			$task = 'transfer';
+		}
+		if ('maintenance' == Input::post('task'))
+		{
+		    $task = 'maintenance';
 		}
 		$config_post = Input::post('config');
 		$this->Template->referer   = $this->getReferer(ENCODE_AMPERSANDS);
@@ -74,6 +80,10 @@ class easyupdate3 extends \BackendModule
 			    	$this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok'], $path_parts['basename']) );
 			    	$this->writeDbafs($GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3', $path_parts['basename']);
 			    }
+			    break;
+			case 'maintenance' :
+			    $jobresult = $this->doMaintenanceJobss();
+			    $this->Template->ModuleFile .= $this->getFiles();
 			    break;
 			case 1 :
 				$this->Template->ModuleList = $this->showInformation($archive, $config_post);
@@ -306,8 +316,22 @@ class easyupdate3 extends \BackendModule
 		$return .= '  </div>'; //tl_formbody_edit
 		$return .='   <div style="clear:both"></div>';
 		// Wartung
+		
+		$totalUpdates = $this->countZipFilesInFolder('easyupdate3', 'zip');
+		$totalBackups = $this->countZipFilesInFolder('easyupdate3/backup', 'zip');
+		$totalLogs    = $this->countZipFilesInFolder('easyupdate3/logs', 'log');
+		
 		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left;">';
 		$return .= '  <div class="tl_tbox" id="tl_maintenance_cache" style="border-top: 1px solid;">';
+		
+		if ($this->JOBSTATUS) 
+		{
+		
+            $return .= '    <div class="tl_message">
+                              <p class="tl_confirm">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm'].'</p>
+                            </div>';
+		}
+		
 		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title'].'</h3>';
 		$return .= '
 <form id="transfer_form" action="' . ampersand(Environment::get('request')) . '" name="maintenance" class="tl_form" method="POST" style="display: inline;">
@@ -325,13 +349,18 @@ class easyupdate3 extends \BackendModule
 				<tbody>
 					<tr>
 						<td><input name="maintenance[files][]" id="maintenance_updates" class="tl_checkbox" value="updates" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
-						<td class="nw"><label for="maintenance_updates">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>38, 123 KiB</span></td>
+						<td class="nw"><label for="maintenance_updates">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalUpdates.'</span></td>
 						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr'].'</td>
 					</tr>
 					<tr>
-						<td><input name="maintenance[files][]" id="maintenance_updates" class="tl_checkbox" value="backups" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
-						<td class="nw"><label for="maintenance_backups">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>12, 234 KiB</span></td>
+						<td><input name="maintenance[files][]" id="maintenance_backups" class="tl_checkbox" value="backups" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_backups">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalBackups.'</span></td>
 						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr'].'</td>
+					</tr>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_logs" class="tl_checkbox" value="logs" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_logs">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalLogs.'</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr'].'</td>
 					</tr>
 				</tbody>
 			</table>
@@ -1075,4 +1104,86 @@ class easyupdate3 extends \BackendModule
 	    	default: return $size_str;
 	    }
 	}
+	
+	protected function doMaintenanceJobss()
+	{
+	    $maintenance = Input::post('maintenance');
+	    if (!empty($maintenance) && is_array($maintenance))
+	    {
+	        foreach ($maintenance as $group=>$jobs)
+	        {
+	            foreach ($jobs as $job)
+	            {
+	                //updates
+	                //backups
+	                //logs
+	                switch ($job)
+	                {
+	                	case 'updates' :
+	                	    $this->delFilesInFolder('easyupdate3', 'zip');
+	                	    $this->JOBSTATUS = true;
+	                	    break;
+                	    case 'backups' :
+                	        $this->delFilesInFolder('easyupdate3/backup', 'zip');
+                	        $this->JOBSTATUS = true;
+                	        break;
+            	        case 'logs' :
+            	            $this->delFilesInFolder('easyupdate3/logs', 'log');
+            	            $this->JOBSTATUS = true;
+            	            break;
+            	        default :
+            	            $this->JOBSTATUS = false;
+            	            break;
+	                }
+	            }
+	        }
+	    }
+	    else 
+	    {
+	        $this->JOBSTATUS = false;
+	    }
+	    return;
+	}
+	
+	protected function countZipFilesInFolder($folder, $extension)
+	{
+	    $total = 0;
+	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
+	    // Only check existing folders
+	    if (is_dir(TL_ROOT . '/' . $folder))
+	    {
+	        $arrFiles = glob(TL_ROOT . '/' . $folder . '/*.' . $extension);
+	        if (is_array($arrFiles))
+	        {
+	            foreach ($arrFiles as $strFile)
+	            {
+	                ++$total;
+	            }
+	        }
+	    }
+	    return $total;
+	}
+	
+	protected function delFilesInFolder($folder, $extension)
+	{
+	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
+	    // Only check existing folders
+	    if (is_dir(TL_ROOT . '/' . $folder))
+	    {
+	        $arrFiles = glob(TL_ROOT . '/' . $folder . '/*.' . $extension);
+	        if (is_array($arrFiles))
+	        {
+	            foreach ($arrFiles as $strFile)
+	            {
+	                //@error_log(sprintf("[%s] %s\n", date('d-M-Y H:i:s'), $folder .'/'. basename($strFile) ), 3, TL_ROOT .'/system/logs/debug.log');
+	                $objFile = new \File($folder .'/'. basename($strFile), true);
+	                $objFile->delete();
+	            }
+	        }
+	    }
+	    return;
+	}
+	
+	
+	
 }

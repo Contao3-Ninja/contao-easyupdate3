@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2017-01-20T23:35:58+01:00
+ * last-updated: 2017-01-21T23:24:15+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -46,15 +46,18 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']      = 'Keine pas
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']     = 'Problem bei der Ermittlung des Dateinamens';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                      = 'easyUpdate einer Contao-Version (aktuelle Version: %s)';
 $GLOBALS['TL_LANG']['easyupdate3']['log_notice']                    = 'Die komplette Logdatei ist über die Dateiverwaltung zu finden im Verzeichnis: %s';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm']     = 'Die Daten wurden bereinigt';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']            = 'Daten bereinigen';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr']  = 'Löscht alle Backup ZIP-Dateien, die vor einem Updatevorgang von "easyUpdate3" angelegt wurden.';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']       = 'Backup ZIP-Dateien löschen';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr']     = 'Löscht alle Log-Dateien, die von "easyUpdate3" angelegt wurden.';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs']          = 'Log-Dateien löschen';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr']  = 'Löscht alle Update ZIP-Dateien, die von "easyUpdate3" geladen wurden oder manuell in den Dateiordner "easyupdate3" abgelegt wurden.';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']       = 'Update ZIP-Dateien löschen';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']       = 'Beschreibung';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']             = 'Dateien';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']               = 'Job';
-$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']             = 'Löschen der ZIP-Dateien';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']             = 'Löschen der ZIP-Dateien  bzw. der Log-Dateien';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                          = 'Nächsten Schritt ausführen';
 $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']             = 'Es gibt nichts zu löschen.';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                      = 'Dateien vom Update ausschließen';

@@ -179,7 +179,7 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 		//linke Box TODO: partial template
-		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; border-right: 1px solid;">';
+		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; border-right: 1px solid; padding-right: 18px;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '      <form action="' . ampersand(Environment::get('request')) . '" name="tl_select_file" class="tl_form" method="GET">';
 		$return .= '          <h3><label for="ctrl_original">' . $GLOBALS['TL_LANG']['easyupdate3']['selectfile'] . '</label></h3>';
@@ -203,7 +203,7 @@ class easyupdate3 extends \BackendModule
 		//rechte Box TODO: partial template
 		$EA3Server = EasyUpdate3\ea3ServerCommunication::getInstance();  
 		$EA3ServerStatus = $EA3Server->getEA3ServerStatus(); 
-		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left;">';
+		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; padding-right: 18px;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_title'].'</h3>';
 		if ($EA3ServerStatus == 0) //offline gesetzt
@@ -321,7 +321,7 @@ class easyupdate3 extends \BackendModule
 		$totalBackups = $this->countFilesInFolder('easyupdate3/backup', 'zip');
 		$totalLogs    = $this->countFilesInFolder('easyupdate3/logs', 'log');
 		
-		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left;">';
+		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left; padding-right: 18px;">';
 		$return .= '  <div class="tl_tbox" id="tl_maintenance_cache" style="border-top: 1px solid;">';
 		
 		if ($this->JOBSTATUS) 
@@ -372,7 +372,7 @@ class easyupdate3 extends \BackendModule
 		$return .= '    </div>'; //tl_box
 		$return .= '  </div>'; //tl_formbody_edit
 		// Wartung Ende \\
-		
+		$return .='   <div style="clear:both"></div>';
 		$return .= '</div>'; //main
 		$return .= '<style type="text/css">
                     /* <![CDATA[ */

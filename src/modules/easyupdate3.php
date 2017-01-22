@@ -82,7 +82,7 @@ class easyupdate3 extends \BackendModule
 			    }
 			    break;
 			case 'maintenance' :
-			    $jobresult = $this->doMaintenanceJobss();
+			    $jobresult = $this->doMaintenanceJobs();
 			    $this->Template->ModuleFile .= $this->getFiles();
 			    break;
 			case 1 :
@@ -317,9 +317,9 @@ class easyupdate3 extends \BackendModule
 		$return .='   <div style="clear:both"></div>';
 		// Wartung
 		
-		$totalUpdates = $this->countZipFilesInFolder('easyupdate3', 'zip');
-		$totalBackups = $this->countZipFilesInFolder('easyupdate3/backup', 'zip');
-		$totalLogs    = $this->countZipFilesInFolder('easyupdate3/logs', 'log');
+		$totalUpdates = $this->countFilesInFolder('easyupdate3', 'zip');
+		$totalBackups = $this->countFilesInFolder('easyupdate3/backup', 'zip');
+		$totalLogs    = $this->countFilesInFolder('easyupdate3/logs', 'log');
 		
 		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left;">';
 		$return .= '  <div class="tl_tbox" id="tl_maintenance_cache" style="border-top: 1px solid;">';
@@ -1090,9 +1090,12 @@ class easyupdate3 extends \BackendModule
 	}
 	
 	/**
+	 * Convert size information with unit to bytes (number)
+	 * 
 	 * https://php.net/manual/en/function.ini-get.php#96996
 	 * 
-	 * @param  string  $size_str (128M, 64m, ...)
+	 * @param  string  $size_str   Size with unit (128M, 64m, ...)
+	 * @return number              Size in bytes 
 	 */
 	protected function convertToBytes ($size_str)
 	{
@@ -1105,7 +1108,11 @@ class easyupdate3 extends \BackendModule
 	    }
 	}
 	
-	protected function doMaintenanceJobss()
+	/**
+	 * Maintenance jobs
+	 * Status is set in JOBSTATUS
+	 */
+	protected function doMaintenanceJobs()
 	{
 	    $maintenance = Input::post('maintenance');
 	    if (!empty($maintenance) && is_array($maintenance))
@@ -1145,7 +1152,14 @@ class easyupdate3 extends \BackendModule
 	    return;
 	}
 	
-	protected function countZipFilesInFolder($folder, $extension)
+	/**
+	 * Count Files in folder with special extension
+	 * 
+	 * @param string $folder       relative to the upload path
+	 * @param string $extension    'zip', 'log'
+	 * @return number              Number of Files
+	 */
+	protected function countFilesInFolder($folder, $extension)
 	{
 	    $total = 0;
 	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
@@ -1164,6 +1178,12 @@ class easyupdate3 extends \BackendModule
 	    return $total;
 	}
 	
+	/**
+	 * Delete files in folder with special extension
+	 * 
+	 * @param string $folder       relative to the upload path
+	 * @param string $extension    'zip', 'log'
+	 */
 	protected function delFilesInFolder($folder, $extension)
 	{
 	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
@@ -1175,7 +1195,6 @@ class easyupdate3 extends \BackendModule
 	        {
 	            foreach ($arrFiles as $strFile)
 	            {
-	                //@error_log(sprintf("[%s] %s\n", date('d-M-Y H:i:s'), $folder .'/'. basename($strFile) ), 3, TL_ROOT .'/system/logs/debug.log');
 	                $objFile = new \File($folder .'/'. basename($strFile), true);
 	                $objFile->delete();
 	            }

@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2017-01-20T22:32:36+01:00
+ * last-updated: 2017-01-20T23:35:58+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -46,6 +46,14 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']      = 'Подх�
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']     = 'Проблема поиска имени файла.';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                      = 'easyUpdate обновление Contao (текущая версия: %s)';
 $GLOBALS['TL_LANG']['easyupdate3']['log_notice']                    = 'Файл журнала можно найти с помощью файл-менеджера в каталоге: %s';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']            = 'Очистить данные';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr']  = 'Удаление zip-файлов всех резервных копий, которые были созданы перед операцией обновления в "easyUpdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']       = 'Удалить ZIP-файлы резервных копий';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr']  = 'Удаление zip-файлов всех обновлений, включая загруженные из "easyUpdate3" или сохраненные вручную в каталог "easyupdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']       = 'Удалить ZIP-файлы обновлений';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']       = 'Описание';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']             = 'Файлы';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']               = 'Задача';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                          = 'Следующий шаг';
 $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']             = 'Нет файлов для удаления.';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                      = 'ИСКЛЮЧИТЬ файлы из обновления';

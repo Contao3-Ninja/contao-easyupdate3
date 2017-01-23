@@ -33,6 +33,8 @@ $GLOBALS['TL_LANG']['easyupdate3']['exclude']                      = 'exclude';
 $GLOBALS['TL_LANG']['easyupdate3']['files_not_availabe']           = 'files not available';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']              = 'Backup files';
 $GLOBALS['TL_LANG']['easyupdate3']['files']['original']            = 'Original files';
+$GLOBALS['TL_LANG']['easyupdate3']['foundfiles']                   = 'Notice';
+$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess']                = 'The file .htaccess.default has changed. Please match with the file .htaccess, if used.';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                     = 'easyUpdate your Contao version (current version: %s)';
 $GLOBALS['TL_LANG']['easyupdate3']['log_notice']                   = 'The complete log file can be found on the file management, in the directory: %s';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                         = 'Next step';
@@ -40,6 +42,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']            = 'There is n
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                     = 'Exclude files for update';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext']                 = 'You can select files which are not updated.<br>But the backup catch also these files.';
 $GLOBALS['TL_LANG']['easyupdate3']['other_legend']                 = 'other Files';
+$GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow']              = 'Your PHP version (%s) is too old for Contao %s!<br>You need at least version %s.';
 $GLOBALS['TL_LANG']['easyupdate3']['previous']                     = 'Back to home';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline']           = 'Please read it complete before use';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text']         = 'List the files, backup the current files, update the files, deletion of old files and run the install tool. It is possible that you must update the Contao database, in this case you see the install tool.';
@@ -48,7 +51,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text']         = 'Nothing is
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']        = 'Security notice:';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect'] = 'Tested and incorrect operations: Contao 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']   = 'Tested and working operations: Contao 3.x.x ==> 3.x.x';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']              = 'The installation until to the Contao version 3.4.0 was checked. Not possible with Contao 2.x!. If you see as the version information X.X.X the ZIP-file could be damaged.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']              = 'The installation until to the Contao version 3.5.24 was checked. Not possible with Contao 2.x!. If you see as the version information X.X.X the ZIP-file could be damaged.';
 $GLOBALS['TL_LANG']['easyupdate3']['selectfile']                   = 'Please select a local archive (ZIP-file)';
 $GLOBALS['TL_LANG']['easyupdate3']['setfile']                      = 'Select';
 $GLOBALS['TL_LANG']['easyupdate3']['skipped']                      = 'Skipped: ';
@@ -81,3 +84,18 @@ $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_notok'] = 'Problem wh
 $GLOBALS['TL_LANG']['easyupdate3']['update_transfer_wrong_hash']   = 'Problem when transferring the file %s, wrong MD5-Hash.';
 
 $GLOBALS['TL_LANG']['easyupdate3']['smh_warning']                  = 'Warning: "Safe Mode Hack" detected, but this is not supported.';
+
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']            = 'Delete of the ZIP files respectively the log files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']              = 'Job';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']      = 'Description';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']      = 'Delete update ZIP files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']      = 'Delete backup ZIP files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs']         = 'Delete log files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']            = 'Files';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr'] = 'Deletes all Update ZIP files which have been loaded from "easyUpdate3" or manually stored in the file folder "easyupdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr'] = 'Deletes all Backup ZIP files that were created before an update operation of "easyUpdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr']    = 'Deletes all log files that were created of "easyUpdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']           = 'Purge data';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm']    = 'The data has been purged';
+
+

@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2015-07-30T00:29:05+02:00
+ * last-updated: 2017-01-23T00:38:42+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -37,6 +37,8 @@ $GLOBALS['TL_LANG']['easyupdate3']['files']['backup']               = 'Backupdat
 $GLOBALS['TL_LANG']['easyupdate3']['files']['original']             = 'Originaldateien';
 $GLOBALS['TL_LANG']['easyupdate3']['files_not_availabe']            = 'Dateien nicht verfügbar';
 $GLOBALS['TL_LANG']['easyupdate3']['fopen_curl_notice']             = '"easyUpdate3" benötigt das gesetzte PHP-Flag "allow_url_fopen" in der php.ini oder die PHP cURL-Erweiterung zur Kommunikation mit dem "easyUpdate3 Server".';
+$GLOBALS['TL_LANG']['easyupdate3']['foundfiles']                    = 'Hinweis';
+$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess']                 = 'Die Datei .htaccess.default wurde verändert. Bitte mit der Datei .htaccess abgleichen, sofern verwendet.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_error']         = 'Problem bei der Suche nach dem nächsten Update.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_file_notfound'] = 'Keine passende Datei gefunden für die ermmittelte UUID. Der Provider der Update Dateien wurde über diesen Fehler automatisch informiert.';
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_found']         = 'Passendes Update gefunden auf Version %s';
@@ -44,11 +46,24 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']      = 'Keine pas
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']     = 'Problem bei der Ermittlung des Dateinamens';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                      = 'easyUpdate einer Contao-Version (aktuelle Version: %s)';
 $GLOBALS['TL_LANG']['easyupdate3']['log_notice']                    = 'Die komplette Logdatei ist über die Dateiverwaltung zu finden im Verzeichnis: %s';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm']     = 'Die Daten wurden bereinigt';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']            = 'Daten bereinigen';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr']  = 'Löscht alle Backup ZIP-Dateien, die vor einem Updatevorgang von "easyUpdate3" angelegt wurden.';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']       = 'Backup ZIP-Dateien löschen';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr']     = 'Löscht alle Log-Dateien, die von "easyUpdate3" angelegt wurden.';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs']          = 'Log-Dateien löschen';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr']  = 'Löscht alle Update ZIP-Dateien, die von "easyUpdate3" geladen wurden oder manuell in den Dateiordner "easyupdate3" abgelegt wurden.';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']       = 'Update ZIP-Dateien löschen';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']       = 'Beschreibung';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']             = 'Dateien';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']               = 'Job';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']             = 'Löschen der ZIP-Dateien  bzw. der Log-Dateien';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                          = 'Nächsten Schritt ausführen';
 $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']             = 'Es gibt nichts zu löschen.';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                      = 'Dateien vom Update ausschließen';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext']                  = 'Die hier ausgewählten Dateien werden beim Aktualisieren nicht überschrieben bzw überspielt.<br>In das Backup werde Sie aber trotzdem übernommen.';
 $GLOBALS['TL_LANG']['easyupdate3']['other_legend']                  = 'andere Dateien';
+$GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow']               = 'Ihre PHP Version (%s) ist zu alt für Contao %s!<br>Sie benötigen mindestens Version %s.';
 $GLOBALS['TL_LANG']['easyupdate3']['previous']                      = 'Zurück zum Hauptbildschirm';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline']            = 'Bitte aufmerksam und vollständig vor der Benutzung lesen';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text']          = 'Auflistung der Dateien, Backup der aktuellen Dateien, Aktualisierung der Dateien, Löschung alter Dateien, Ausführung des Install-Tools. Es kann vorkommen, dass die Datenbank aktualisiert werden muss; darauf wird man im Install-Tool hingewiesen.';
@@ -57,7 +72,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_text']          = 'Es gibt k
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text2_title']         = 'Sicherheitshinweise:';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['incorrect']  = 'Getestete und fehlerhafte Vorgänge: Contao 2.x.x ==> 2.x.x';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text3']['working']    = 'Getestete und funktionierende Vorgänge: Contao 3.x.x ==> 3.x.x';
-$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Getestet wurde eine Installation bis zur Contao Version 3.4.0. Nicht mit Contao 2.x möglich! Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';
+$GLOBALS['TL_LANG']['easyupdate3']['readme']['text4']               = 'Getestet wurde eine Installation bis zur Contao Version 3.5.24. Nicht mit Contao 2.x möglich! Wenn eine Versionsnummer X.X.X erscheint, dann ist wahrscheinlich die ZIP-Datei beschädigt.';
 $GLOBALS['TL_LANG']['easyupdate3']['selectfile']                    = 'Bitte wählen Sie ein lokales Archiv aus (ZIP-Datei)';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error']                  = 'Server nicht erreichbar';
 $GLOBALS['TL_LANG']['easyupdate3']['server_error_notice']           = 'Im Menü unter System - System-Log ist die Ursache protokolliert.';

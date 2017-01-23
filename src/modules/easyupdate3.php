@@ -21,15 +21,25 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected $DELETE = array();
 	
+	protected $JOBSTATUS = false;
+	
 	protected function compile() 
 	{
-		@ini_set("memory_limit", "128M");
+	    if ( $this->convertToBytes( ini_get("memory_limit") ) < 134217728 ) 
+	    {
+	    	@ini_set("memory_limit", "128M");
+	    }
+		
 		// \\
 		$archive = Input::get('filename');
 		$task    = ($archive == 'n.a.' ? 'nofiles' : Input::get('task'));
 		if ('transfer' == Input::post('task')) 
 		{
 			$task = 'transfer';
+		}
+		if ('maintenance' == Input::post('task'))
+		{
+		    $task = 'maintenance';
 		}
 		$config_post = Input::post('config');
 		$this->Template->referer   = $this->getReferer(ENCODE_AMPERSANDS);
@@ -70,6 +80,10 @@ class easyupdate3 extends \BackendModule
 			    	$this->Template->ModuleFile = $this->getFiles( sprintf($GLOBALS['TL_LANG']['easyupdate3']['update_transfer_result_ok'], $path_parts['basename']) );
 			    	$this->writeDbafs($GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3', $path_parts['basename']);
 			    }
+			    break;
+			case 'maintenance' :
+			    $jobresult = $this->doMaintenanceJobs();
+			    $this->Template->ModuleFile .= $this->getFiles();
 			    break;
 			case 1 :
 				$this->Template->ModuleList = $this->showInformation($archive, $config_post);
@@ -165,7 +179,7 @@ class easyupdate3 extends \BackendModule
 			}
 		}
 		//linke Box TODO: partial template
-		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; border-right: 1px solid;">';
+		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; border-right: 1px solid; padding-right: 18px;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '      <form action="' . ampersand(Environment::get('request')) . '" name="tl_select_file" class="tl_form" method="GET">';
 		$return .= '          <h3><label for="ctrl_original">' . $GLOBALS['TL_LANG']['easyupdate3']['selectfile'] . '</label></h3>';
@@ -189,7 +203,7 @@ class easyupdate3 extends \BackendModule
 		//rechte Box TODO: partial template
 		$EA3Server = EasyUpdate3\ea3ServerCommunication::getInstance();  
 		$EA3ServerStatus = $EA3Server->getEA3ServerStatus(); 
-		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left;">';
+		$return .= '<div class="tl_formbody_edit" style="width:45%; float:left; padding-right: 18px;">';
 		$return .= '  <div class="tl_tbox">';
 		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['extern_title'].'</h3>';
 		if ($EA3ServerStatus == 0) //offline gesetzt
@@ -301,10 +315,69 @@ class easyupdate3 extends \BackendModule
 		$return .= '    </div>'; //tl_box
 		$return .= '  </div>'; //tl_formbody_edit
 		$return .='   <div style="clear:both"></div>';
+		// Wartung TODO: partial template
+		
+		$totalUpdates = $this->countFilesInFolder('easyupdate3', 'zip');
+		$totalBackups = $this->countFilesInFolder('easyupdate3/backup', 'zip');
+		$totalLogs    = $this->countFilesInFolder('easyupdate3/logs', 'log');
+		
+		$return .= '<div class="tl_formbody_edit" style="width:95%; float:left; padding-right: 18px;">';
+		$return .= '  <div class="tl_tbox" id="tl_maintenance_cache" style="border-top: 1px solid;">';
+		
+		if ($this->JOBSTATUS) 
+		{
+		
+            $return .= '    <div class="tl_message">
+                              <p class="tl_confirm">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm'].'</p>
+                            </div>';
+		}
+		
+		$return .= '    <h3>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title'].'</h3>';
+		$return .= '
+<form id="transfer_form" action="' . ampersand(Environment::get('request')) . '" name="maintenance" class="tl_form" method="POST" style="display: inline;">
+			<input type="hidden" name="do" value="easyupdate3">
+			<input type="hidden" name="REQUEST_TOKEN"  value="'.REQUEST_TOKEN.'">
+			<input type="hidden" name="task" value="maintenance">
+			<table>
+				<thead>
+					<tr>
+						<th><input id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, \'maintenance\')" type="checkbox"></th>
+						<th>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_job'].'</th>
+						<th>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_description'].'</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_updates" class="tl_checkbox" value="updates" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_updates">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalUpdates.'</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr'].'</td>
+					</tr>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_backups" class="tl_checkbox" value="backups" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_backups">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalBackups.'</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr'].'</td>
+					</tr>
+					<tr>
+						<td><input name="maintenance[files][]" id="maintenance_logs" class="tl_checkbox" value="logs" onfocus="Backend.getScrollOffset()" type="checkbox"></td>
+						<td class="nw"><label for="maintenance_logs">'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs'].'</label><br>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_files'].': <span>'.$totalLogs.'</span></td>
+						<td>'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr'].'</td>
+					</tr>
+				</tbody>
+			</table>
+            <div class="tl_submit_container">
+                <input name="clear" class="tl_submit" value="'.$GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit'].'" type="submit">
+            </div>
+</form>
+';
+		$return .= '    </div>'; //tl_box
+		$return .= '  </div>'; //tl_formbody_edit
+		// Wartung Ende \\
+		$return .='   <div style="clear:both"></div>';
 		$return .= '</div>'; //main
 		$return .= '<style type="text/css">
                     /* <![CDATA[ */
                     .server_status > img { vertical-align: middle; }
+                    .tl_submit_container { background: rgba(0, 0, 0, 0) none repeat scroll 0 0; }
                     /* ]]> */
                     </style>';
 		return $return;
@@ -318,6 +391,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showInformation($archive, $config_post) 
 	{
+	    $constants = '';
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$this->logSteps('#### Start easyUpdate3 ####', $archive, true);
 		$this->logSteps('Show information', $archive);
@@ -345,7 +419,7 @@ class easyupdate3 extends \BackendModule
 			}
 			// get the version an build number
 			$this->IMPORT = $this->getVersionAndBuild($constants);
-			// check the both version
+			// check the both version, 0 => older, 1 => newer, 2 => same
 			$update = $this->checkVersion($this->IMPORT);
 		}
 		$return .= '<div style="width:700px; margin:0 auto;">';
@@ -436,6 +510,9 @@ class easyupdate3 extends \BackendModule
 		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? checked : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br>';
 		$return .= $strConfig;
 		$return .= '</form></div><div style="clear:both;"></div><br><p class="tl_info" style="height: 26px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
+		
+		$return .= $this->checkPhpTooOld($this->IMPORT['VERSION'] .'.'. $this->IMPORT['BUILD'], PHP_VERSION);
+		
 		$return .= '';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;"><strong>&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</strong></a>';
@@ -452,6 +529,8 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function showChangelog($archive) 
 	{
+	    $constants = '';
+	    $changelog = '';
 		$archive = $GLOBALS['TL_CONFIG']['uploadPath'] . '/easyupdate3/' . (substr($archive, 0, 3) == 'bak' ? 'backup/' : '') . $archive;
 		$this->logSteps('Show changelog', $archive);
 		$objArchive = new \ZipReader($archive);
@@ -470,7 +549,7 @@ class easyupdate3 extends \BackendModule
 		$objArchive->reset();
 		// get the version an build number
 		$this->IMPORT = $this->getVersionAndBuild($constants);
-		// check the both version
+		// check the both version, 0 => older, 1 => newer, 2 => same
 		$update = $this->checkVersion($this->IMPORT);
 		switch ($update) 
 		{
@@ -749,16 +828,11 @@ class easyupdate3 extends \BackendModule
 		$this->Automator->purgeScriptCache();
 		$this->logSteps('Purged the internal cache', $archive);
 		
+		(function_exists('opcache_reset')) && opcache_reset();
+		(function_exists('accelerator_reset')) && accelerator_reset();
+		
 		$redirectUrl = str_replace('task=5', 'task=6', Environment::get('base') . Environment::get('request'));
 		$this->redirect($redirectUrl);
-		/*
-	    $return .= '</ol></div>';
-	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
-		$return .= '<a href="' . $redirectUrl . '" style="float:right;">' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</a>';
-	    $return .= '</div>';
-	    $return .= '</div>';
-	    return $return;
-        */
 	}
 
 	protected function deleteOldFiles($archive)
@@ -767,7 +841,9 @@ class easyupdate3 extends \BackendModule
 	    $this->logSteps('Delete old files', $archive);
 	    $this->DELETE = array();
 	    $return = '';
-	    
+	    $filesfound = 0;
+	    $htaccessfound = false;
+	    	    
 	    $objArchive = new \ZipReader($archive);
 	    $arrFiles = $objArchive->getFileList();	    
 	    $i = strpos($arrFiles[0], '/') + 1;
@@ -777,18 +853,33 @@ class easyupdate3 extends \BackendModule
 	        if (substr($strfile, -12) == '.delete.json')
 	        {
 	            $this->DELETE = json_decode( $objArchive->unzip() );
-	            break;
+	            $filesfound++;
+	        }
+	        if ($strfile == '.htaccess.default')
+	        {
+	            $htaccessfound = true;
+	            $filesfound++;
+	        }
+	        if ($filesfound == 2) 
+	        {
+	        	break;
 	        }
 	    }
 	    
 	    $return .= '<div style="width:700px; margin:0 auto;">';
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['update'] . '</h1>';
-	    $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+	    $return .= '<ul  style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+
 	    $return .= '<h1  style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['delete'] . '</h1>';
-	    //$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:400px; overflow:auto; background:#eee; border:1px solid #999;">';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; height:200px; overflow:auto;">';
-	    $return .= '<ul style="margin-top:0px"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'<br>&nbsp;<br></li>';
-	     
+	    $return .= '<ul  style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['done'].'</li></ul>';
+
+	    if ($htaccessfound) 
+	    {
+	       $return .= '<h1 style="font-family:Verdana,sans-serif; font-size:16px; margin:18px 3px;">' . $GLOBALS['TL_LANG']['easyupdate3']['foundfiles'] . '</h1>';
+	       $return .= '<ul style="margin-top:0px; margin-left: 3px;"><li style="list-style: inside none square;">'.$GLOBALS['TL_LANG']['easyupdate3']['foundhtaccess'].'</li></ul>';
+        }
+        $return .= '<br>&nbsp;<br>';	     
 	    //Delete files that would be deleted
 	    reset($this->DELETE);
 	    //$this->log('DELETE Array: '.print_r($this->DELETE, true), 'easyupdate copyfiles()', TL_GENERAL);
@@ -850,7 +941,7 @@ class easyupdate3 extends \BackendModule
 	    // Add log entry
 	    $this->log('easyUpdate3 completed', 'easyUpdate3 completed', TL_GENERAL);
 	    $this->logSteps('easyUpdate3 completed, call install.php now', $archive);
-	    $return .= '</ul>'.sprintf($GLOBALS['TL_LANG']['easyupdate3']['log_notice'], "easyupdate3/logs/".str_ireplace('.zip', '', basename($archive)) .".log") .'</div>';
+	    $return .= sprintf($GLOBALS['TL_LANG']['easyupdate3']['log_notice'], "easyupdate3/logs/".str_ireplace('.zip', '', basename($archive)) .".log") .'</div>';
 	    $return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 	    $return .= '<a href="' . Environment::get('base') . 'contao/install.php" style="float:right;"><strong>' . $GLOBALS['TL_LANG']['easyupdate3']['next'] . ' &gt;</strong></a>';
 	    $return .= '</div>';
@@ -864,6 +955,7 @@ class easyupdate3 extends \BackendModule
 	 */
 	protected function getVersionAndBuild($temp) 
 	{
+	    $pos_v = $pos_b = false;
 		foreach (explode("\n", $temp) as $text) 
 		{
 			if (substr_count($text, 'VERSION')) 
@@ -885,8 +977,8 @@ class easyupdate3 extends \BackendModule
 	/**
 	 * check if new, same or old version
 	 * @param array $IMPORT
-	 * @return    integer    0 => old
-	 *                       1 => News
+	 * @return    integer    0 => older
+	 *                       1 => newer
 	 *                       2 => same
 	 */
 	protected function checkVersion($IMPORT) 
@@ -895,6 +987,7 @@ class easyupdate3 extends \BackendModule
 		$VERSION = explode(".", VERSION);
 		$VERSION_IMPORT = explode(".", $IMPORT['VERSION']);
 		$BUILD_IMPORT = $IMPORT['BUILD'];
+		
 		if ($VERSION[0] > $VERSION_IMPORT[0]) 
 		{
 			$update = 0;
@@ -993,4 +1086,159 @@ class easyupdate3 extends \BackendModule
 	    \Dbafs::updateFolderHashes($strUploadFolder);
 	    
 	}
+	
+	/**
+	 * Convert size information with unit to bytes (number)
+	 * 
+	 * https://php.net/manual/en/function.ini-get.php#96996
+	 * 
+	 * @param  string  $size_str   Size with unit (128M, 64m, ...)
+	 * @return number              Size in bytes 
+	 */
+	protected function convertToBytes ($size_str)
+	{
+	    switch (substr ($size_str, -1))
+	    {
+	    	case 'M': case 'm': return (int)$size_str * 1048576;
+	    	case 'K': case 'k': return (int)$size_str * 1024;
+	    	case 'G': case 'g': return (int)$size_str * 1073741824;
+	    	default: return $size_str;
+	    }
+	}
+	
+	/**
+	 * Maintenance jobs
+	 * Status is set in JOBSTATUS
+	 */
+	protected function doMaintenanceJobs()
+	{
+	    $maintenance = Input::post('maintenance');
+	    if (!empty($maintenance) && is_array($maintenance))
+	    {
+	        foreach ($maintenance as $group=>$jobs)
+	        {
+	            foreach ($jobs as $job)
+	            {
+	                //updates
+	                //backups
+	                //logs
+	                switch ($job)
+	                {
+	                	case 'updates' :
+	                	    $this->delFilesInFolder('easyupdate3', 'zip');
+	                	    $this->JOBSTATUS = true;
+	                	    break;
+                	    case 'backups' :
+                	        $this->delFilesInFolder('easyupdate3/backup', 'zip');
+                	        $this->JOBSTATUS = true;
+                	        break;
+            	        case 'logs' :
+            	            $this->delFilesInFolder('easyupdate3/logs', 'log');
+            	            $this->JOBSTATUS = true;
+            	            break;
+            	        default :
+            	            $this->JOBSTATUS = false;
+            	            break;
+	                }
+	            }
+	        }
+	    }
+	    else 
+	    {
+	        $this->JOBSTATUS = false;
+	    }
+	    return;
+	}
+	
+	/**
+	 * Count Files in folder with special extension
+	 * 
+	 * @param string $folder       relative to the upload path
+	 * @param string $extension    'zip', 'log'
+	 * @return number              Number of Files
+	 */
+	protected function countFilesInFolder($folder, $extension)
+	{
+	    $total = 0;
+	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
+	    // Only check existing folders
+	    if (is_dir(TL_ROOT . '/' . $folder))
+	    {
+	        $arrFiles = glob(TL_ROOT . '/' . $folder . '/*.' . $extension);
+	        if (is_array($arrFiles))
+	        {
+	            foreach ($arrFiles as $strFile)
+	            {
+	                ++$total;
+	            }
+	        }
+	    }
+	    return $total;
+	}
+	
+	/**
+	 * Delete files in folder with special extension
+	 * 
+	 * @param string $folder       relative to the upload path
+	 * @param string $extension    'zip', 'log'
+	 */
+	protected function delFilesInFolder($folder, $extension)
+	{
+	    $folder = $GLOBALS['TL_CONFIG']['uploadPath'] . '/' . $folder;
+	    // Only check existing folders
+	    if (is_dir(TL_ROOT . '/' . $folder))
+	    {
+	        $arrFiles = glob(TL_ROOT . '/' . $folder . '/*.' . $extension);
+	        if (is_array($arrFiles))
+	        {
+	            foreach ($arrFiles as $strFile)
+	            {
+	                $objFile = new \File($folder .'/'. basename($strFile), true);
+	                $objFile->delete();
+	            }
+	        }
+	    }
+	    return;
+	}
+	
+	/**
+	 * Check if PHP version too old for the new Contao version
+	 * 
+	 * @param string $newcontaoversion     New Contao version
+	 * @param string $phpversion           Installed PHP version
+	 * @return string                      Warning text if PHP version is too old
+	 */
+	protected function checkPhpTooOld($newcontaoversion, $phpversion)
+	{
+	    if ($newcontaoversion == 'X.X.X') 
+	    {
+	    	return '';
+	    }
+	    if ( version_compare( $newcontaoversion, '3.5.0', '>=' ) && version_compare($phpversion, '5.4.0', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                            	            $phpversion,
+                                                            	            $newcontaoversion,
+                                                            	            '5.4.0') . '</p>';
+	    }
+	    elseif ( version_compare( $newcontaoversion, '3.4.0', '>=' ) && version_compare($phpversion, '5.3.7', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                            	            $phpversion,
+                                                            	            $newcontaoversion,
+                                                            	            '5.3.7') . '</p>';
+	    }
+	    elseif ( version_compare( $newcontaoversion, '3.0.0', '>=' ) && version_compare($phpversion, '5.3.2', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                                            $phpversion,
+                                                                            $newcontaoversion,
+                                                                            '5.3.2') . '</p>';
+	    }
+	    return '';
+	}
+	
 }

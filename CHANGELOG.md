@@ -1,5 +1,18 @@
 # Changelog EasyUpdate3
 
+## [3.5.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.0%22+is%3Aclosed) (2017-01-23)
+
+### New features
+
+- [\#71](https://github.com/BugBuster1701/contao-easyupdate3/issues/71) opcache Unterstützung
+- [\#68](https://github.com/BugBuster1701/contao-easyupdate3/issues/68) Startpanel erweitern
+- [\#49](https://github.com/BugBuster1701/contao-easyupdate3/issues/49) check .htaccess and .htaccess.default or give a hint to manually compare them
+- [\#41](https://github.com/BugBuster1701/contao-easyupdate3/issues/41) PHP Version prüfen für Zielversion
+
+### Fixed bugs
+
+- [\#73](https://github.com/BugBuster1701/contao-easyupdate3/issues/73) Anpassungen an Backend-Theme "flexible_c4" für Contao 3.5
+
 ## [3.4.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.4.0%22+is%3Aclosed) (2016-12-27)
 
 ### New features

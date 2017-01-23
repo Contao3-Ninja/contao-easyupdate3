@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2017-01-20T23:35:58+01:00
+ * last-updated: 2017-01-22T21:07:49+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -46,19 +46,24 @@ $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_notfound']      = 'Подх�
 $GLOBALS['TL_LANG']['easyupdate3']['get_next_update_url_error']     = 'Проблема поиска имени файла.';
 $GLOBALS['TL_LANG']['easyupdate3']['headline']                      = 'easyUpdate обновление Contao (текущая версия: %s)';
 $GLOBALS['TL_LANG']['easyupdate3']['log_notice']                    = 'Файл журнала можно найти с помощью файл-менеджера в каталоге: %s';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_clear_confirm']     = 'Данные были очищены';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_commit']            = 'Очистить данные';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backup_descr']  = 'Удаление zip-файлов всех резервных копий, которые были созданы перед операцией обновления в "easyUpdate3".';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_backups']       = 'Удалить ZIP-файлы резервных копий';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_log_descr']     = 'Удаление всех файлов журналов, которые были созданы "easyUpdate3".';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_logs']          = 'Удалить файлы журнала';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_update_descr']  = 'Удаление zip-файлов всех обновлений, включая загруженные из "easyUpdate3" или сохраненные вручную в каталог "easyupdate3".';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_del_updates']       = 'Удалить ZIP-файлы обновлений';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_description']       = 'Описание';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_files']             = 'Файлы';
 $GLOBALS['TL_LANG']['easyupdate3']['maintenance_job']               = 'Задача';
+$GLOBALS['TL_LANG']['easyupdate3']['maintenance_title']             = 'Удалить соответствующие файлы журналов';
 $GLOBALS['TL_LANG']['easyupdate3']['next']                          = 'Следующий шаг';
 $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']             = 'Нет файлов для удаления.';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                      = 'ИСКЛЮЧИТЬ файлы из обновления';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext']                  = 'Вы можете выбрать файлы, ИСКЛЮЧАЕМЫЕ из обновления.<br>В резервную копию войдут все файлы включая эти.';
 $GLOBALS['TL_LANG']['easyupdate3']['other_legend']                  = 'Другие файлы';
+$GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow']               = 'Ваша версия PHP (%s) устарела для использования с Contao %s!<br>Вам нужна как минимум версия %s.';
 $GLOBALS['TL_LANG']['easyupdate3']['previous']                      = 'Вернуться назад';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline']            = 'Прочтите полностью перед использованием';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text']          = 'Получение списка файлов в архиве. Резервное копирование имеющихся файлов. Обновление файлов. Удаление старых файлов. Запуск мастера установки. Вполне возможно, что вам необходимо будет обновить базу данных Contao, в этом случае, вы увидите мастер установки.';

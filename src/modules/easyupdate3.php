@@ -315,7 +315,7 @@ class easyupdate3 extends \BackendModule
 		$return .= '    </div>'; //tl_box
 		$return .= '  </div>'; //tl_formbody_edit
 		$return .='   <div style="clear:both"></div>';
-		// Wartung
+		// Wartung TODO: partial template
 		
 		$totalUpdates = $this->countFilesInFolder('easyupdate3', 'zip');
 		$totalBackups = $this->countFilesInFolder('easyupdate3/backup', 'zip');
@@ -510,6 +510,9 @@ class easyupdate3 extends \BackendModule
 		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? checked : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br>';
 		$return .= $strConfig;
 		$return .= '</form></div><div style="clear:both;"></div><br><p class="tl_info" style="height: 26px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
+		
+		$return .= $this->checkPhpTooOld($this->IMPORT['VERSION'] .'.'. $this->IMPORT['BUILD'], PHP_VERSION);
+		
 		$return .= '';
 		$return .= '<div style="font-family:Verdana,sans-serif; font-size:11px; margin:18px 3px 12px 3px; overflow:hidden;">';
 		$return .= '<a href="' . Environment::get('base') . 'contao/main.php?do=easyupdate3" style="float:left;"><strong>&lt; ' . $GLOBALS['TL_LANG']['easyupdate3']['previous'] . '</strong></a>';
@@ -1198,6 +1201,44 @@ class easyupdate3 extends \BackendModule
 	    return;
 	}
 	
-	
+	/**
+	 * Check if PHP version too old for the new Contao version
+	 * 
+	 * @param string $newcontaoversion     New Contao version
+	 * @param string $phpversion           Installed PHP version
+	 * @return string                      Warning text if PHP version is too old
+	 */
+	protected function checkPhpTooOld($newcontaoversion, $phpversion)
+	{
+	    if ($newcontaoversion == 'X.X.X') 
+	    {
+	    	return '';
+	    }
+	    if ( version_compare( $newcontaoversion, '3.5.0', '>=' ) && version_compare($phpversion, '5.4.0', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                            	            $phpversion,
+                                                            	            $newcontaoversion,
+                                                            	            '5.4.0') . '</p>';
+	    }
+	    elseif ( version_compare( $newcontaoversion, '3.4.0', '>=' ) && version_compare($phpversion, '5.3.7', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                            	            $phpversion,
+                                                            	            $newcontaoversion,
+                                                            	            '5.3.7') . '</p>';
+	    }
+	    elseif ( version_compare( $newcontaoversion, '3.0.0', '>=' ) && version_compare($phpversion, '5.3.2', '<') )
+	    {
+	        //'Your PHP version (%s) is too old for Contao %s! You need at least version %s.'
+	        return '<p class="tl_error" style="height: 26px;">' . sprintf($GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow'],
+                                                                            $phpversion,
+                                                                            $newcontaoversion,
+                                                                            '5.3.2') . '</p>';
+	    }
+	    return '';
+	}
 	
 }

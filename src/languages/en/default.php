@@ -42,6 +42,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']            = 'There is n
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                     = 'Exclude files for update';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext']                 = 'You can select files which are not updated.<br>But the backup catch also these files.';
 $GLOBALS['TL_LANG']['easyupdate3']['other_legend']                 = 'other Files';
+$GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow']              = 'Your PHP version (%s) is too old for Contao %s!<br>You need at least version %s.';
 $GLOBALS['TL_LANG']['easyupdate3']['previous']                     = 'Back to home';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline']           = 'Please read it complete before use';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text']         = 'List the files, backup the current files, update the files, deletion of old files and run the install tool. It is possible that you must update the Contao database, in this case you see the install tool.';

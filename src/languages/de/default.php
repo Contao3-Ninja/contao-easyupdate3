@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2017-01-21T23:24:15+01:00
+ * last-updated: 2017-01-23T00:38:42+01:00
  */
 
 $GLOBALS['TL_LANG']['MOD']['easyupdate3']['0']                      = 'easyUpdate3';
@@ -63,6 +63,7 @@ $GLOBALS['TL_LANG']['easyupdate3']['nothing_to_delete']             = 'Es gibt n
 $GLOBALS['TL_LANG']['easyupdate3']['noupdate']                      = 'Dateien vom Update ausschließen';
 $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext']                  = 'Die hier ausgewählten Dateien werden beim Aktualisieren nicht überschrieben bzw überspielt.<br>In das Backup werde Sie aber trotzdem übernommen.';
 $GLOBALS['TL_LANG']['easyupdate3']['other_legend']                  = 'andere Dateien';
+$GLOBALS['TL_LANG']['easyupdate3']['phpversiontolow']               = 'Ihre PHP Version (%s) ist zu alt für Contao %s!<br>Sie benötigen mindestens Version %s.';
 $GLOBALS['TL_LANG']['easyupdate3']['previous']                      = 'Zurück zum Hauptbildschirm';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['headline']            = 'Bitte aufmerksam und vollständig vor der Benutzung lesen';
 $GLOBALS['TL_LANG']['easyupdate3']['readme']['text1_text']          = 'Auflistung der Dateien, Backup der aktuellen Dateien, Aktualisierung der Dateien, Löschung alter Dateien, Ausführung des Install-Tools. Es kann vorkommen, dass die Datenbank aktualisiert werden muss; darauf wird man im Install-Tool hingewiesen.';

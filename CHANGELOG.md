@@ -1,5 +1,12 @@
 # Changelog EasyUpdate3
 
+## [3.5.2](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.2%22+is%3Aclosed) (2018-01-24)
+
+### Fixed bugs
+
+- [\#81](https://github.com/BugBuster1701/contao-easyupdate3/issues/81) Undefined constant uncompressed_size
+- [\#80](https://github.com/BugBuster1701/contao-easyupdate3/issues/80) License "LGPL-3.0+" is a deprecated SPDX license identifier, use "LGPL-3.0-or-later" instead
+
 ## [3.5.1](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.1%22+is%3Aclosed) (2018-01-23)
 
 ### Fixed bugs

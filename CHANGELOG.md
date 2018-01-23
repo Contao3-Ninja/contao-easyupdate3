@@ -1,5 +1,11 @@
 # Changelog EasyUpdate3
 
+## [3.5.1](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.1%22+is%3Aclosed) (2018-01-23)
+
+### Fixed bugs
+
+- [\#78](https://github.com/BugBuster1701/contao-easyupdate3/issues/78) Using PHP 7.2.1: Warning: Use of undefined constant ENCODE_AMPERSANDS
+
 ## [3.5.0](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.0%22+is%3Aclosed) (2017-01-23)
 
 ### New features

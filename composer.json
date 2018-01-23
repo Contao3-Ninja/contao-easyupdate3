@@ -4,7 +4,7 @@
 	"keywords":["contao","update"],
 	"type":"contao-module",
 	"homepage":"http://contao.ninja",
-	"license":"LGPL-3.0+",
+	"license":"LGPL-3.0-or-later",
 	"authors":[
 		{
 			"name":"Glen Langer",
@@ -33,7 +33,7 @@
 	},
 	"extra":{
 		"branch-alias": {
-			"dev-develop": "3.5.x-dev"
+			"dev-develop": "3.6.x-dev"
         },
 		"contao":{
 			"sources":{

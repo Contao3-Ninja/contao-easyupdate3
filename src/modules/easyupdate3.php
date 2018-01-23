@@ -801,7 +801,7 @@ class easyupdate3 extends \BackendModule
 				$test = $objArchive->current();
 				//Würgaround, Zipreader macht immer noch eine Exception
 				//wenn Datei 0 Byte hat
-				if ($test[uncompressed_size] != 0)
+				if ($test['uncompressed_size'] != 0)
 				{
 				    $objFile->write($objArchive->unzip());
 				}

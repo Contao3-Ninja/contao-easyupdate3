@@ -42,7 +42,7 @@ class easyupdate3 extends \BackendModule
 		    $task = 'maintenance';
 		}
 		$config_post = Input::post('config');
-		$this->Template->referer   = $this->getReferer(ENCODE_AMPERSANDS);
+		$this->Template->referer   = $this->getReferer(true);
 		$this->Template->backTitle = specialchars($GLOBALS['TL_LANG']['easyupdate3']['backBT']);
 		$this->Template->headline  = sprintf($GLOBALS['TL_LANG']['easyupdate3']['headline'], VERSION . '.' . BUILD);
 		switch ($task) 

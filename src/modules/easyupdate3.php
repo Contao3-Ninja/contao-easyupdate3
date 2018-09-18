@@ -454,8 +454,8 @@ class easyupdate3 extends \BackendModule
                    ) 
 				{
 					$intall++;
-					$checked = $config[$file] == 1 ? checked : '';
-					$intcheck = $checked == checked ? ++ $intcheck : $intcheck;
+					$checked = $config[$file] == 1 ? 'checked' : '';
+					$intcheck = $checked == 'checked' ? ++ $intcheck : $intcheck;
 					$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $file);
 				}
 			}
@@ -464,14 +464,14 @@ class easyupdate3 extends \BackendModule
 		$file = "robots.txt";
 		if (is_file(Environment::get('documentRoot') . Environment::get('path') . "/" . $file)) 
 		{
-			$checked = $config[$file] == 1 ? checked : '';
+			$checked = $config[$file] == 1 ? 'checked' : '';
 			$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $file);
 		}
 		// add by BugBuster
 		$file = "tinymce.css";
 		if (is_file(Environment::get('documentRoot') . Environment::get('path') . "/".$GLOBALS['TL_CONFIG']['uploadPath']."/" . $file))
 		{
-		    $checked = $config[$file] == 1 ? checked : '';
+		    $checked = $config[$file] == 1 ? 'checked' : '';
 		    $strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][%s]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file, $GLOBALS['TL_CONFIG']['uploadPath'] . '/'.$file);
 		}
 
@@ -479,14 +479,14 @@ class easyupdate3 extends \BackendModule
 		if (version_compare($this->IMPORT['VERSION'] .'.'. $this->IMPORT['BUILD'], '3.3.1', '<')) 
 		{
             $file = $GLOBALS['TL_LANG']['easyupdate3']['demo'];
-            $checked = $config[demo] == 1 ? checked : '';
+            $checked = $config[demo] == 1 ? 'checked' : '';
     		$strConfig .= sprintf('<input type="checkbox" id="config" name="config[files][demo]" value="1" ' . $checked . ' onChange="document.tl_select_config.submit();"/>%s<br>', $file);
 		}
 
 		// add the exclude files to the config
 		if ($GLOBALS['TL_CONFIG']['easyupdate3']) 
 		{
-			if (sizeof($config))
+			if (is_array($config) && sizeof($config))
 			{
 			    $this->Config->update("\$GLOBALS['TL_CONFIG']['easyupdate3']", serialize($config));
 			}
@@ -507,7 +507,7 @@ class easyupdate3 extends \BackendModule
 		$return .= '<input type="hidden" name="config[update]" value="' . $update . '">';
 		$return .= '<input type="hidden" name="config[import]" value="' . htmlentities(serialize($this->IMPORT)) . '">';
 		$id = "'config'";
-		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? checked : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br>';
+		$return .= '<input type="checkbox" onChange="Backend.toggleCheckboxes(this, ' . $id . ');document.tl_select_config.submit();"' . ($intall == $intcheck ? 'checked' : '') . '/><label style="color:#a6a6a6;">' . $GLOBALS['TL_LANG']['easyupdate3']['all'] . '</label><br>';
 		$return .= $strConfig;
 		$return .= '</form></div><div style="clear:both;"></div><br><p class="tl_info" style="height: 26px;">' . $GLOBALS['TL_LANG']['easyupdate3']['noupdatetext'] . '</p>';
 		
@@ -705,7 +705,7 @@ class easyupdate3 extends \BackendModule
 		}
 		//Backup of files that would be deleted.
 		reset($this->DELETE);
-		if ( 0 < count($this->DELETE)) 
+		if (is_array($this->DELETE) && 0 < count($this->DELETE)) 
 		{
 		    $this->logSteps('Backup of files that would be deleted', $archive);
     		foreach ($this->DELETE as $strFile => $md5)
@@ -883,7 +883,7 @@ class easyupdate3 extends \BackendModule
 	    //Delete files that would be deleted
 	    reset($this->DELETE);
 	    //$this->log('DELETE Array: '.print_r($this->DELETE, true), 'easyupdate copyfiles()', TL_GENERAL);
-	    if ( 0 < count($this->DELETE))
+	    if (is_array($this->DELETE) && 0 < count($this->DELETE))
 	    {
 	        foreach ($this->DELETE as $strFile => $md5)
 	        {

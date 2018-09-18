@@ -1,5 +1,11 @@
 # Changelog EasyUpdate3
 
+## [3.5.3](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.3%22+is%3Aclosed) (2018-09-18)
+
+### Fixed bugs
+
+- [\#86](https://github.com/BugBuster1701/contao-easyupdate3/issues/86) Fixes some PHP 7.2+ problems
+
 ## [3.5.2](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.2%22+is%3Aclosed) (2018-01-24)
 
 ### Fixed bugs

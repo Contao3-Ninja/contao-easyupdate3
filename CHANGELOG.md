@@ -1,5 +1,11 @@
 # Changelog EasyUpdate3
 
+## [3.5.4](https://github.com/Contao3-Ninja/contao-easyupdate3/issues?q=milestone%3A3.5.4+is%3Aclosed) (2020-11-26)
+
+### Fixed bugs
+
+- [\#92](https://github.com/BugBuster1701/contao-easyupdate3/issues/92) Fixed "Server Offline" problem
+
 ## [3.5.3](https://github.com/BugBuster1701/contao-easyupdate3/issues?q=milestone%3A%223.5.3%22+is%3Aclosed) (2018-09-18)
 
 ### Fixed bugs

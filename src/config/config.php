@@ -18,4 +18,4 @@ array_insert($GLOBALS['BE_MOD']['system'], 3, array (
 ));
 
 //TODO
-$GLOBALS['EA3SERVER']['TARGET'] = 'http://ea3server.contao.ninja/system/modules/easyupdate3_server/public/index.php';
+$GLOBALS['EA3SERVER']['TARGET'] = 'https://ea3server.contao.ninja/system/modules/easyupdate3_server/public/index.php';

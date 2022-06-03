@@ -10,7 +10,7 @@ Ich habe das Modul für Contao 3 angepasst, um weiter damit arbeiten zu können.
 
 ## Installation manuell
 
-* Der der Inhalt des src/ Ordners muss nach system/modules/easyupdate3/ in der Contao 3 Installation. 
+* Der Inhalt des src/ Ordners muss nach system/modules/easyupdate3/ in der Contao 3 Installation. 
 * Systemwartung aufrufen
 
 ## Installation über Composer

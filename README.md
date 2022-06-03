@@ -4,10 +4,14 @@ Fork vom Contao Modul easyupdate.
 Ich habe das Modul für Contao 3 angepasst, um weiter damit arbeiten zu können.
 
 
-## Installation über ER2
+## Installation über ER2 (abgeschaltet)
 
 * [zum Contao ER2](https://contao.org/de/extension-list/view/easyupdate3.de.html)
 
+## Installation manuell
+
+* Der der Inhalt des src/ Ordners muss nach system/modules/easyupdate3/ in der Contao 3 Installation. 
+* Systemwartung aufrufen
 
 ## Installation über Composer
 

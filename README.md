@@ -11,6 +11,7 @@ Ich habe das Modul für Contao 3 angepasst, um weiter damit arbeiten zu können.
 ## Installation manuell
 
 * Der Inhalt des src/ Ordners muss nach system/modules/easyupdate3/ in der Contao 3 Installation. 
+* Den Inhalt von https://github.com/Contao3-Ninja/contao-tivoka nach system/modules/tivoka kopieren.
 * Systemwartung aufrufen
 
 ## Installation über Composer
